@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BloomStudio — offline render</title>
+    <style>
+      html, body { margin: 0; background: #12101a; color: #e8e2f2; font: 14px system-ui, sans-serif; }
+      #stage { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+      #stage canvas { max-width: 100%; height: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+    </style>
+  </head>
+  <body>
+    <div id="stage">Waiting for the pipeline to load a project…</div>
+    <script type="module" src="/src/headless.ts"></script>
+  </body>
+</html>

@@ -30,6 +30,10 @@ export interface FaceOptions {
   /** Bugs and animals get no visible brows; kids do. */
   brows?: boolean;
   browColor?: number;
+  /** Brow bar radius as a fraction of eye radius. Heavy brows read as angry. */
+  browThickness?: number;
+  /** Brow bar length as a fraction of eye radius. */
+  browLength?: number;
   /** Blush cheeks. On by default — it's most of the "friendly". */
   blush?: boolean;
   /** Push the whole face forward for a snouted animal. */
@@ -91,14 +95,19 @@ export function buildFace(opts: FaceOptions): FaceRig {
     hi2.position.set(side * eyeR * 0.2, -eyeR * 0.2, eyeR * 0.64);
     pupilPivot.add(hi2);
 
-    // A soft upper lash line gives the eye a top edge without an outline pass.
-    const lash = new THREE.Mesh(geo.sphere(eyeR * 1.04, 16), flat(0x2c2436));
-    lash.scale.set(1, 0.34, 0.62);
-    lash.position.y = eyeR * 0.92;
-    squash.add(lash);
+    // The lash line: a thin bar capping the eye. On characters with eyes too
+    // big to leave room for separate brows (every bug in the library) this
+    // doubles as the eyebrow, tilting and lifting with the expression — which
+    // is exactly how it works in 2D animation.
+    const lashPivot = new THREE.Group();
+    lashPivot.position.y = eyeR * 0.9;
+    const lash = new THREE.Mesh(geo.sphere(eyeR * 0.98, 16), flat(0x453a52));
+    lash.scale.set(1, 0.11, 0.55);
+    lashPivot.add(lash);
+    squash.add(lashPivot);
 
     group.add(pivot);
-    return { pivot, squash, pupilPivot, lash };
+    return { pivot, squash, pupilPivot, lash: lashPivot, side };
   };
 
   const leftEye = makeEye(1);
@@ -107,12 +116,13 @@ export function buildFace(opts: FaceOptions): FaceRig {
   /* ---- brows ---- */
   let leftBrow: THREE.Object3D | null = null;
   let rightBrow: THREE.Object3D | null = null;
+  const browLift = eyeR * 1.72;
   if (opts.brows !== false) {
-    const browGeo = geo.capsule(eyeR * 0.13, eyeR * 0.9, 6);
+    const browGeo = geo.capsule(eyeR * (opts.browThickness ?? 0.1), eyeR * (opts.browLength ?? 0.72), 6);
     const browMat = toon(opts.browColor ?? 0x4a3728);
     const mk = (side: 1 | -1) => {
       const pivot = new THREE.Group();
-      pivot.position.set(side * spacing, eyeY + eyeR * 1.5, faceZ * 0.9);
+      pivot.position.set(side * spacing, eyeY + browLift, faceZ * 0.9);
       const bar = new THREE.Mesh(browGeo, browMat);
       bar.rotation.z = Math.PI / 2;
       pivot.add(bar);
@@ -124,8 +134,14 @@ export function buildFace(opts: FaceOptions): FaceRig {
   }
 
   /* ---- mouth ---- */
+  // The head is a sphere, so the surface at mouth height sits *further back*
+  // than at eye height. Placing the mouth at a flat depth buries it, and only
+  // its corners poke through — which renders as a jagged red smear rather than
+  // a mouth. Follow the sphere instead.
+  const mouthY = -R * 0.36;
+  const mouthZ = Math.sqrt(Math.max(0.01, R * R - mouthY * mouthY)) * 0.94;
   const mouthRoot = new THREE.Group();
-  mouthRoot.position.set(0, -R * 0.36, faceZ * 0.9);
+  mouthRoot.position.set(0, mouthY, mouthZ);
   group.add(mouthRoot);
 
   // The dark opening. Squashing this in Y takes it from "wide open" to a line,
@@ -139,13 +155,14 @@ export function buildFace(opts: FaceOptions): FaceRig {
   tongue.scale.set(1, 0.5, 0.8);
   mouthRoot.add(tongue);
 
-  const teeth = new THREE.Mesh(geo.box(R * 0.42, R * 0.08, R * 0.06), flat(PALETTE.teeth));
-  teeth.position.set(0, R * 0.11, R * 0.14);
+  // Teeth live *inside* the opening. Pushed forward they float in front of the
+  // face as a stray white tile.
+  const teeth = new THREE.Mesh(geo.box(R * 0.34, R * 0.07, R * 0.05), flat(PALETTE.teeth));
   mouthRoot.add(teeth);
 
   // Smile arc: a torus segment that curves up for happy, flips for sad. It sits
   // just under the opening so a closed happy mouth still reads as a smile.
-  const arcGeo = new THREE.TorusGeometry(R * 0.26, R * 0.035, 8, 20, Math.PI);
+  const arcGeo = new THREE.TorusGeometry(R * 0.34, R * 0.05, 8, 22, Math.PI);
   const smileArc = new THREE.Mesh(arcGeo, flat(0x5a3040));
   smileArc.rotation.z = Math.PI;
   smileArc.position.y = R * 0.02;
@@ -179,14 +196,16 @@ export function buildFace(opts: FaceOptions): FaceRig {
     const wideScale = 1 + pose.eyeWide * 0.22;
     for (const eye of [leftEye, rightEye]) {
       eye.squash.scale.set(wideScale, openScale * wideScale, 1);
-      eye.lash.position.y = eyeR * (0.92 - close * 0.5);
+      eye.lash.position.y = eyeR * (0.9 + pose.browRaise * 0.22 - close * 0.45);
+      // Inner end down for a scowl, up for worry — the same convention as brows.
+      eye.lash.rotation.z = eye.side * (pose.browTilt * 0.3 - pose.browRaise * 0.05);
     }
 
     // --- brows ---
     if (leftBrow && rightBrow) {
-      const lift = pose.browRaise * eyeR * 0.55;
-      leftBrow.position.y = eyeY + eyeR * 1.5 + lift;
-      rightBrow.position.y = eyeY + eyeR * 1.5 + lift;
+      const lift = pose.browRaise * eyeR * 0.5;
+      leftBrow.position.y = eyeY + browLift + lift;
+      rightBrow.position.y = eyeY + browLift + lift;
       // Inner ends rise for sadness, fall for a scowl.
       leftBrow.rotation.z = -pose.browTilt * 0.45 - pose.browRaise * 0.06;
       rightBrow.rotation.z = pose.browTilt * 0.45 + pose.browRaise * 0.06;
@@ -196,18 +215,21 @@ export function buildFace(opts: FaceOptions): FaceRig {
     // Viseme opening plus whatever baseline the expression asks for.
     const open = Math.min(1.2, mouth.open + pose.mouthOpen * 0.8);
     const width = 1 + mouth.wide * 0.35 - mouth.round * 0.42 + Math.max(0, pose.smile) * 0.22;
+    // Below a real opening the arc alone carries the mouth. Drawing a thin
+    // dark slit *and* a smile line reads as two mouths on one face.
+    mouthHole.visible = open > 0.11;
     mouthHole.scale.set(
       Math.max(0.35, width),
       Math.max(0.1, open * 1.0),
       0.42 + mouth.round * 0.35,
     );
-    mouthRoot.position.z = faceZ * 0.9 + mouth.round * R * 0.1;
+    mouthRoot.position.z = mouthZ + mouth.round * R * 0.1;
 
     tongue.visible = open > 0.35;
-    tongue.position.y = -R * 0.05 - open * R * 0.14;
-    teeth.visible = mouth.teeth > 0.25;
-    teeth.scale.setScalar(Math.max(0.2, mouth.teeth));
-    teeth.position.y = R * 0.04 + open * R * 0.11;
+    tongue.position.set(0, -R * 0.05 - open * R * 0.14, -R * 0.02);
+    teeth.visible = mouth.teeth > 0.25 && open > 0.15;
+    teeth.scale.set(Math.max(0.5, width * 0.85), Math.max(0.3, mouth.teeth), 1);
+    teeth.position.set(0, open * R * 0.16, -R * 0.02);
 
     // The arc only shows when the mouth is near-closed; an open mouth already
     // carries the expression, and both at once looks like two mouths.
@@ -215,8 +237,8 @@ export function buildFace(opts: FaceOptions): FaceRig {
     smileArc.visible = arcStrength > 0.05 && Math.abs(pose.smile) > 0.05;
     const curve = pose.smile;
     smileArc.scale.set(
-      Math.max(0.4, width * 0.9),
-      Math.max(0.25, Math.abs(curve) * 1.1) * arcStrength + 0.25,
+      Math.max(0.5, width * 0.95),
+      Math.max(0.35, Math.abs(curve) * 1.3) * arcStrength + 0.3,
       1,
     );
     // Flip the arc for a frown.

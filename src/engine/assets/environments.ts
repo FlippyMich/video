@@ -97,16 +97,19 @@ const THEMES: Record<EnvironmentTheme, ThemeBuilder> = {
   garden: (spec, rand, root) => {
     const density = spec.density ?? 0.6;
     root.add(groundDisc(PALETTE.leafLight));
-    // A tended patch of darker soil, so the flowers look planted, not scattered.
-    const bed = new THREE.Mesh(geo.circle(6.5, 32), toon(shade(PALETTE.soil, 0.12)));
-    bed.rotation.x = -Math.PI / 2;
-    bed.position.y = 0.01;
-    root.add(bed);
+    // Narrow planted borders rather than open soil. Big bare discs read as mud
+    // puddles from a low camera; a thin strip under the flowers reads as a bed.
+    for (const [x, z, w] of [[-5.2, -4.2, 4.4], [5.0, -4.6, 3.6]] as const) {
+      const bed = new THREE.Mesh(geo.plane(w, 1.5), toon(shade(PALETTE.soil, 0.1)));
+      bed.rotation.x = -Math.PI / 2;
+      bed.position.set(x, 0.012, z);
+      root.add(bed);
+    }
     hills(root, rand, PALETTE.leaf);
 
-    scatter(root, rand, Math.round(34 * density), 1.6, 8, (i, r) =>
+    scatter(root, rand, Math.round(34 * density), 2.6, 9, (i, r) =>
       buildProp(r() < 0.22 ? 'prop.tulip' : r() < 0.5 ? 'prop.daisy' : 'prop.flower', { seed: i * 17 + spec.seed, scale: 0.9 + r() * 0.5 }));
-    scatter(root, rand, Math.round(40 * density), 1.2, 12, (i, r) =>
+    scatter(root, rand, Math.round(40 * density), 2.2, 12, (i, r) =>
       buildProp('prop.grass-tuft', { seed: i * 7 + spec.seed, scale: 0.8 + r() * 0.7 }));
     scatter(root, rand, Math.round(6 * density), 6, 13, (i) =>
       buildProp('prop.bush', { seed: i * 31 + spec.seed }));

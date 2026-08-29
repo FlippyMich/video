@@ -21,6 +21,17 @@ export interface FramingSpec {
   coverage: number;
   /** Eye-height offset as a fraction of subject height. */
   aim: number;
+  /**
+   * Aim at the character's actual head rather than at a fraction of its
+   * height. Tight shots must do this: "92% of the way up" lands well below the
+   * face on a character whose head is a third of its body, and crops it.
+   */
+  aimHead?: boolean;
+  /**
+   * Coverage expressed in head-diameters instead of body-heights. Used by every
+   * tight framing, because "head and shoulders" is a statement about the head.
+   */
+  headCoverage?: number;
   /** Horizontal angle from the subject's front, in radians. */
   yaw: number;
   /** Vertical angle above the aim point, in radians. */
@@ -31,13 +42,13 @@ export interface FramingSpec {
 const FRAMINGS: Record<FramingPreset, FramingSpec> = {
   wide:                { coverage: 3.2,  aim: 0.55, yaw: 0.22,  pitch: 0.12,  fov: 44 },
   full:                { coverage: 1.35, aim: 0.5,  yaw: 0.18,  pitch: 0.06,  fov: 38 },
-  medium:              { coverage: 0.75, aim: 0.78, yaw: 0.2,   pitch: 0.02,  fov: 36 },
-  'close-up':          { coverage: 0.4,  aim: 0.92, yaw: 0.14,  pitch: 0.0,   fov: 32 },
-  'extreme-close-up':  { coverage: 0.22, aim: 0.95, yaw: 0.08,  pitch: 0.0,   fov: 30 },
-  'over-shoulder':     { coverage: 0.9,  aim: 0.86, yaw: 0.85,  pitch: 0.05,  fov: 34 },
+  medium:              { coverage: 0.9,  aim: 0.72, yaw: 0.2,   pitch: 0.02,  fov: 36, aimHead: true, headCoverage: 3.4 },
+  'close-up':          { coverage: 0.62, aim: 0.9,  yaw: 0.14,  pitch: 0.0,   fov: 32, aimHead: true, headCoverage: 2.1 },
+  'extreme-close-up':  { coverage: 0.4,  aim: 0.95, yaw: 0.08,  pitch: 0.0,   fov: 30, aimHead: true, headCoverage: 1.35 },
+  'over-shoulder':     { coverage: 1.0,  aim: 0.86, yaw: 0.85,  pitch: 0.05,  fov: 34, aimHead: true, headCoverage: 3.0 },
   'low-angle':         { coverage: 1.1,  aim: 0.5,  yaw: 0.16,  pitch: -0.34, fov: 40 },
   'high-angle':        { coverage: 1.2,  aim: 0.62, yaw: 0.16,  pitch: 0.5,   fov: 40 },
-  'two-shot':          { coverage: 1.9,  aim: 0.7,  yaw: 0.05,  pitch: 0.04,  fov: 40 },
+  'two-shot':          { coverage: 1.9,  aim: 0.62, yaw: 0.04,  pitch: 0.03,  fov: 40 },
 };
 
 export const FRAMING_LABELS: Record<FramingPreset, string> = {
@@ -102,15 +113,44 @@ export function composeShot(
 
   // Subject height decides the distance; without a subject, frame the origin
   // as if it were a 1.6-unit character.
-  const height = (rt?.character?.height ?? 1.6) * (rt?.object.scale.y ?? 1);
-  if (targetId) runtime.getNodeFocus(targetId, _focus);
-  else _focus.set(0, height * spec.aim, 0);
-
-  // If the subject is a character we aimed at its head; back off to the
-  // requested aim height measured from its feet instead.
-  if (rt) {
+  let height = (rt?.character?.height ?? 1.6) * (rt?.object.scale.y ?? 1);
+  if (rt && spec.aimHead && targetId) {
+    // Tight shots track the real head, wherever the performance has put it.
+    runtime.getNodeFocus(targetId, _focus);
+  } else if (rt) {
     rt.object.getWorldPosition(_focus);
+    // Aim by height above the subject's feet, not at its head — that's what
+    // the classic shot sizes are measured from.
     _focus.y += height * spec.aim;
+  } else {
+    _focus.set(0, height * spec.aim, 0);
+  }
+
+  // A two-shot has to hold *both* people. Framing it on one subject and hoping
+  // is how you get a video full of half-visible characters, so measure the
+  // group and widen to fit it.
+  let groupWidth = 0;
+  if (shot.framing === 'two-shot') {
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let sumX = 0;
+    let n = 0;
+    let tallest = 0;
+    for (const node of runtime.nodes.values()) {
+      if (node.doc.kind !== 'character' || !node.object.visible) continue;
+      node.object.getWorldPosition(_dir);
+      minX = Math.min(minX, _dir.x);
+      maxX = Math.max(maxX, _dir.x);
+      sumX += _dir.x;
+      n++;
+      tallest = Math.max(tallest, (node.character?.height ?? 1.6) * node.object.scale.y);
+    }
+    if (n > 1) {
+      groupWidth = maxX - minX;
+      height = Math.max(height, tallest);
+      _focus.x = sumX / n;
+      _focus.y = height * spec.aim;
+    }
   }
 
   const amount = shot.moveAmount ?? 1;
@@ -119,8 +159,16 @@ export function composeShot(
   // Vertical coverage the framing wants, converted to a distance for this FOV.
   let fov = spec.fov;
   let coverage = spec.coverage * height;
+  if (spec.headCoverage && rt?.character) {
+    coverage = spec.headCoverage * rt.character.headRadius * 2 * rt.object.scale.y;
+  }
   // A 9:16 frame is much narrower; pull back so heads don't get cropped.
   if (aspect < 1) coverage *= 1.45;
+  // Widen for the group: convert the horizontal span the shot must hold into
+  // the vertical coverage the FOV maths works in, plus a margin either side.
+  if (groupWidth > 0) {
+    coverage = Math.max(coverage, ((groupWidth + height * 0.9) / aspect));
+  }
 
   let yaw = spec.yaw;
   let pitch = spec.pitch;

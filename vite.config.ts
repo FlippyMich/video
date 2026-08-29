@@ -11,6 +11,10 @@ export default defineConfig({
     // The renderer, the UI and the asset library each change at very different
     // rates; splitting them keeps a UI tweak from busting the 600kb three.js chunk.
     rollupOptions: {
+      input: {
+        main: 'index.html',
+        render: 'render.html',
+      },
       output: {
         manualChunks: {
           three: ['three'],

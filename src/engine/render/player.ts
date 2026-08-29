@@ -86,7 +86,10 @@ export class Player {
     this.output = document.createElement('canvas');
     this.output.width = this.opts.width;
     this.output.height = this.opts.height;
-    this.ctx = this.output.getContext('2d', { alpha: false })!;
+    // `willReadFrequently` keeps the composite canvas in CPU memory. Every
+    // frame of an export is read back, so a GPU-resident canvas would stall on
+    // readback far longer than the software compositing costs.
+    this.ctx = this.output.getContext('2d', { alpha: false, willReadFrequently: true })!;
 
     this.renderCamera.aspect = this.opts.width / this.opts.height;
     this.renderCamera.updateProjectionMatrix();

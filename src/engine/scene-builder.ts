@@ -207,15 +207,26 @@ export class SceneRuntime {
     return this.defaultCamera;
   }
 
-  /** Bounding-sphere centre of a node in world space. Used for auto-framing. */
+  /**
+   * Where a shot should point to put this node's face in frame.
+   * Falls back to a point above the origin for props and lights.
+   */
   getNodeFocus(nodeId: string, out = new THREE.Vector3()): THREE.Vector3 {
     const rt = this.nodes.get(nodeId);
     if (!rt) return out.set(0, 1, 0);
+    const ch = rt.character;
+    const head = ch?.joints.get('head') ?? ch?.joints.get('body');
+    if (head) {
+      head.updateWorldMatrix(true, false);
+      head.getWorldPosition(out);
+      // The head *joint* sits at the base of the skull; the face is above it.
+      // Framing on the joint puts the chin in the middle of a close-up.
+      const scale = rt.object.scale.y;
+      out.y += (ch!.rigFamily === 'quadruped' || ch!.rigFamily === 'fish' ? 0.06 : 0.22) * scale;
+      return out;
+    }
     rt.object.getWorldPosition(out);
-    // Aim at the head, not the feet — the eyeline is what the audience reads.
-    const head = rt.character?.joints.get(rt.character.rigFamily === 'quadruped' ? 'head' : 'head');
-    if (head) head.getWorldPosition(out);
-    else out.y += 0.6;
+    out.y += 0.6 * rt.object.scale.y;
     return out;
   }
 
