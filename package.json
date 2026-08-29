@@ -1,0 +1,28 @@
+{
+  "name": "bloomstudio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "BloomStudio — a browser-based 3D animation studio for making bright, friendly kids' videos.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173",
+    "typecheck": "tsc --noEmit",
+    "produce": "bash pipeline/run-all.sh"
+  },
+  "dependencies": {
+    "mp4-muxer": "5.1.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.169.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@types/three": "0.169.0",
+    "@vitejs/plugin-react": "4.3.3",
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  }
+}
