@@ -63,6 +63,17 @@ const DEFAULTS: Record<FxKind, EmitterDefaults> = {
   'fx.rain':     { count: 300, color: 0xa8d8f0, color2: 0xd0ecff, size: 0.06, spread: 8, height: 8, rise: -6, gravity: 1.5, turbulence: 0.1, lifetime: 1.6, burst: false, opacity: 0.7 },
 };
 
+/**
+ * Simulated objects. They live in the same list as the particle effects because
+ * to a user they are the same thing — something that moves on its own — even
+ * though they are solved rather than emitted.
+ */
+export const SIM_LIST: { id: string; name: string; description: string }[] = [
+  { id: 'sim.cloth', name: 'Cloth', description: 'A simulated sheet — a flag, a cape, a blanket. Blows in the wind.' },
+  { id: 'sim.rope', name: 'Rope', description: 'A hanging chain that swings. For swings, strings and chimes.' },
+  { id: 'sim.ball', name: 'Bouncing ball', description: 'Drops, bounces and squashes on impact.' },
+];
+
 export const FX_LIST: { id: FxKind; name: string; description: string }[] = [
   { id: 'fx.sparkles', name: 'Sparkles', description: 'Twinkles around a character. The "magic happened" cue.' },
   { id: 'fx.petals', name: 'Falling petals', description: 'Drifts down across the whole frame. Lovely under titles.' },

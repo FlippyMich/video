@@ -10,7 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { CHARACTERS } from '../../engine/assets/characters';
 import { PROPS } from '../../engine/assets/props';
 import { ENVIRONMENTS } from '../../engine/assets/environments';
-import { FX_LIST } from '../../engine/fx/particles';
+import { FX_LIST, SIM_LIST } from '../../engine/fx/particles';
 import { ACTIONS } from '../../engine/anim/clips';
 import { store, uid } from '../store';
 import { useEditor } from '../useEditor';
@@ -50,8 +50,8 @@ export function AssetLibrary() {
         .map((p) => ({ id: p.id, name: p.name, description: p.description, kind: 'prop' as const, group: p.group }));
     }
     if (tab === 'effects') {
-      return FX_LIST.filter((f) => match(f.name, f.description))
-        .map((f) => ({ id: f.id, name: f.name, description: f.description, kind: 'fx' as const, group: 'effects' }));
+      return [...FX_LIST, ...SIM_LIST].filter((f) => match(f.name, f.description))
+        .map((f) => ({ id: f.id as string, name: f.name, description: f.description, kind: 'fx' as const, group: 'effects' }));
     }
     return [];
     // eslint-disable-next-line react-hooks/exhaustive-deps

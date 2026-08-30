@@ -17,6 +17,7 @@ import { EXPRESSION_IDS, blendExpressions, type ExpressionId } from './rig/expre
 import { VISEME_IDS, blendVisemes, type VisemeId } from './rig/visemes';
 import { buildTextMesh } from './assets/text3d';
 import { FxSystem } from './fx/particles';
+import { buildBouncer, buildCloth, buildRope } from './fx/physics';
 
 export interface NodeRuntime {
   doc: SceneNode;
@@ -44,10 +45,17 @@ const LIGHT_RIGS: Record<LightingPreset, { key: number; keyI: number; fill: numb
   'flat-key':    { key: 0xffffff, keyI: 1.2, fill: 0xffffff, fillI: 1.0, rim: 0xffffff, rimI: 0.6, ambient: 0xffffff, ambientI: 1.15 },
 };
 
+/** A physics object that has to be stepped each frame. */
+interface Simulation {
+  update(t: number): void;
+  dispose(): void;
+}
+
 export class SceneRuntime {
   readonly scene = new THREE.Scene();
   readonly nodes = new Map<string, NodeRuntime>();
   readonly fx = new FxSystem();
+  private sims: Simulation[] = [];
   environment!: BuiltEnvironment;
   /** Default camera used when a shot doesn't name one. */
   readonly defaultCamera: THREE.PerspectiveCamera;
@@ -173,7 +181,10 @@ export class SceneRuntime {
         break;
       }
       case 'fx': {
-        this.fx.add(doc.id, doc.assetId, object, (doc.params ?? {}) as never);
+        // Simulations and particle clouds share the `fx` node kind because they
+        // are the same thing to a user: something that moves on its own.
+        if (doc.assetId.startsWith('sim.')) this.addSimulation(doc, object);
+        else this.fx.add(doc.id, doc.assetId, object, (doc.params ?? {}) as never);
         break;
       }
     }
@@ -195,6 +206,48 @@ export class SceneRuntime {
     };
     this.nodes.set(doc.id, rt);
     return rt;
+  }
+
+  private addSimulation(doc: SceneNode, parent: THREE.Object3D) {
+    const p = (doc.params ?? {}) as Record<string, number | string | boolean>;
+    const num = (k: string, fallback: number) => (typeof p[k] === 'number' ? (p[k] as number) : fallback);
+    let sim: Simulation | null = null;
+
+    if (doc.assetId === 'sim.cloth') {
+      const cloth = buildCloth({
+        width: num('width', 1.2),
+        height: num('height', 1.0),
+        cols: num('cols', 12),
+        rows: num('rows', 12),
+        color: num('color', 0xff8fb1),
+        pin: (p.pin as 'top-corners') ?? 'top-corners',
+        wind: new THREE.Vector3(num('windX', 0.6), 0, num('windZ', 0.25)),
+        windGust: num('gust', 0.8),
+      });
+      parent.add(cloth.mesh);
+      sim = cloth;
+    } else if (doc.assetId === 'sim.rope') {
+      const rope = buildRope({
+        length: num('length', 1.4),
+        segments: num('segments', 12),
+        radius: num('radius', 0.02),
+        color: num('color', 0xfff8ec),
+      });
+      parent.add(rope.mesh);
+      sim = rope;
+    } else if (doc.assetId === 'sim.ball') {
+      const ball = buildBouncer({
+        radius: num('radius', 0.24),
+        color: num('color', 0xf5455c),
+        start: new THREE.Vector3(0, num('dropFrom', 2.6), 0),
+        velocity: new THREE.Vector3(num('velocityX', 0.8), 0, num('velocityZ', 0)),
+        bounce: num('bounce', 0.72),
+      });
+      parent.add(ball.mesh);
+      sim = ball;
+    }
+
+    if (sim) this.sims.push(sim);
   }
 
   /** Point every character's eyes at a world position (usually the camera). */
@@ -246,6 +299,7 @@ export class SceneRuntime {
       this.updateNode(rt);
     }
     this.fx.update(t, dt);
+    for (const sim of this.sims) sim.update(t);
   }
 
   private updateNode(rt: NodeRuntime) {
@@ -335,6 +389,8 @@ export class SceneRuntime {
   }
 
   dispose() {
+    for (const sim of this.sims) sim.dispose();
+    this.sims.length = 0;
     this.fx.dispose();
     this.scene.traverse((o) => {
       const mesh = o as THREE.Mesh;
