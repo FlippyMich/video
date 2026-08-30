@@ -413,10 +413,14 @@ function buildScene(
             acc.tracks.push(bakeAction('point', { start: t + 0.2, duration: 1.1, family: acc.family, intensity: 1.1 }));
           }
         }
+        const cue = spec.kind === 'question-pause' ? 'think-cue' : 'twinkle';
         audio.push({
           id: id('aud'), role: 'sfx', lane: 1,
-          src: `audio/sfx/${spec.kind === 'question-pause' ? 'think-cue' : 'twinkle'}.wav`,
-          start: t, duration: Math.min(2, duration), gain: 0.55, label: spec.kind,
+          src: `audio/sfx/${cue}.wav`,
+          start: t, duration: Math.min(2, duration), gain: 0.55,
+          // Name the sound, not the beat: the cue sheet is read by whoever is
+          // replacing the audio, and they need the file.
+          label: `${cue} (${spec.kind})`,
         });
         t += duration;
         break;

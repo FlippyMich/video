@@ -136,6 +136,11 @@ export function composeShot(
     let sumX = 0;
     let n = 0;
     let tallest = 0;
+    // Floor height, not zero: a hovering bee's feet are a metre off the ground,
+    // and aiming a fraction of its height above the world origin frames its
+    // knees.
+    let lowestY = Infinity;
+    let highestTop = -Infinity;
     for (const node of runtime.nodes.values()) {
       if (node.doc.kind !== 'character' || !node.object.visible) continue;
       node.object.getWorldPosition(_dir);
@@ -143,13 +148,17 @@ export function composeShot(
       maxX = Math.max(maxX, _dir.x);
       sumX += _dir.x;
       n++;
-      tallest = Math.max(tallest, (node.character?.height ?? 1.6) * node.object.scale.y);
+      const h = (node.character?.height ?? 1.6) * node.object.scale.y;
+      tallest = Math.max(tallest, h);
+      lowestY = Math.min(lowestY, _dir.y);
+      highestTop = Math.max(highestTop, _dir.y + h);
     }
     if (n > 1) {
       groupWidth = maxX - minX;
-      height = Math.max(height, tallest);
+      // The group spans from the lowest pair of feet to the highest head.
+      height = Math.max(tallest, highestTop - lowestY);
       _focus.x = sumX / n;
-      _focus.y = height * spec.aim;
+      _focus.y = lowestY + height * spec.aim;
     }
   }
 

@@ -14,6 +14,7 @@ import type { Project } from './engine/types';
 import { Player } from './engine/render/player';
 import { parseScript } from './engine/script/parser';
 import { buildProjectFromScript, type BuildOptions } from './engine/script/builder';
+import { bakeSceneToGLB, type BakeSceneOptions } from './engine/render/gltf-bake';
 
 export interface HeadlessInit {
   width: number;
@@ -151,6 +152,35 @@ class Headless {
     this.player.output.toDataURL('image/jpeg', 0.94);
     const encodeMs = performance.now() - e0;
     return { renderMs, encodeMs };
+  }
+
+  /**
+   * Bake one scene to a .glb, animation and camera included.
+   *
+   * Returned as a base64 string: it's the only shape that survives the
+   * automation bridge intact, and a scene is a few megabytes, not a few
+   * hundred.
+   */
+  async exportSceneGLB(sceneId: string, options: BakeSceneOptions = {}) {
+    if (!this.project) throw new Error('Load a project first');
+    const scene = this.project.scenes.find((s) => s.id === sceneId);
+    if (!scene) throw new Error(`No scene "${sceneId}"`);
+    const baked = await bakeSceneToGLB(this.project, scene, options);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < baked.data.length; i += chunk) {
+      binary += String.fromCharCode(...baked.data.subarray(i, i + chunk));
+    }
+    return {
+      sceneId: baked.sceneId,
+      name: baked.name,
+      start: baked.start,
+      duration: baked.duration,
+      frames: baked.frames,
+      keyCount: baked.keyCount,
+      bytes: baked.data.length,
+      base64: btoa(binary),
+    };
   }
 
   getProject(): Project | null {

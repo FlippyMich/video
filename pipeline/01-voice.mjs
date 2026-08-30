@@ -202,6 +202,10 @@ function buildPhonemeTimings(wordPhonemes, region) {
  * ------------------------------------------------------------------ */
 
 const source = fs.readFileSync(SCRIPT, 'utf8');
+// Start from an empty folder. Line numbering shifts whenever the script is
+// edited, so leftover takes from a previous version would linger in the
+// deliverable looking exactly like current ones.
+fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
 const studio = await openStudio();
