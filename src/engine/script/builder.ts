@@ -691,7 +691,7 @@ function buildTitleCard(title: string, subtitle: string, start: number, id: (p: 
   const nodes: SceneNode[] = [
     {
       id: 'title:buzzy', name: 'Buzzy', kind: 'character', assetId: 'char.buzzy',
-      position: [0, 0.45, 0.6], rotation: [0, 0, 0], scale: [1.1, 1.1, 1.1],
+      position: [0, 0.2, 0.6], rotation: [0, 0, 0], scale: [0.95, 0.95, 0.95],
       tracks: mergeTracks(
         bakeAction('flap', { start, duration, family: 'winged-bug' }),
         bakeAction('hover', { start, duration, family: 'winged-bug', intensity: 1 }),
@@ -704,8 +704,10 @@ function buildTitleCard(title: string, subtitle: string, start: number, id: (p: 
     },
     {
       id: 'title:text', name: 'Title', kind: 'text', assetId: 'text',
-      position: [0, 3.15, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
-      params: { text: title, size: 0.5, color: 0xfff3c4, outlineColor: 0x5a3a12, fitWidth: 6.4 },
+      // In front of the character, not behind: the bee's head lands exactly
+      // where the middle of the wordmark is.
+      position: [0, 2.82, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
+      params: { text: title, size: 0.5, color: 0xfff3c4, outlineColor: 0x5a3a12, fitWidth: 5.6 },
       tracks: [
         { channel: 'scale.x', keys: [{ t: start + 0.5, v: -0.9, ease: 'bounce' }, { t: start + 1.3, v: 0 }] },
         { channel: 'scale.y', keys: [{ t: start + 0.5, v: -0.9, ease: 'bounce' }, { t: start + 1.35, v: 0 }] },
@@ -714,8 +716,8 @@ function buildTitleCard(title: string, subtitle: string, start: number, id: (p: 
     },
     {
       id: 'title:sub', name: 'Subtitle', kind: 'text', assetId: 'text',
-      position: [0, 2.5, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
-      params: { text: subtitle, size: 0.24, color: 0xffffff, outlineColor: 0x5a3a12, fitWidth: 4.4 },
+      position: [0, 2.4, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
+      params: { text: subtitle, size: 0.24, color: 0xffffff, outlineColor: 0x5a3a12, fitWidth: 3.9 },
       tracks: [
         { channel: 'position.y', keys: [{ t: start + 1.4, v: -0.4, ease: 'easeOut' }, { t: start + 2.1, v: 0 }] },
         { channel: 'scale.x', keys: [{ t: start + 1.3, v: -1, ease: 'step' }, { t: start + 1.4, v: 0 }] },
@@ -744,8 +746,8 @@ function buildTitleCard(title: string, subtitle: string, start: number, id: (p: 
   const shots: Shot[] = [
     // Both shots stay wide: the title has to fit inside the frame, and a
     // tighter opening would crop the wordmark before it finished animating on.
-    { id: id('shot'), sceneId, start, duration: 2.6, framing: 'wide', targetNodeId: 'title:buzzy', move: 'push-in', moveAmount: 0.5, note: 'Logo animation in' },
-    { id: id('shot'), sceneId, start: start + 2.6, duration: duration - 2.6, framing: 'wide', targetNodeId: 'title:buzzy', move: 'pull-out', moveAmount: 0.6, transitionIn: { type: 'crossfade', duration: 0.4 }, note: 'Reveal full title' },
+    { id: id('shot'), sceneId, start, duration: 2.6, framing: 'two-shot', targetNodeId: 'title:buzzy', move: 'static', note: 'Logo animation in' },
+    { id: id('shot'), sceneId, start: start + 2.6, duration: duration - 2.6, framing: 'two-shot', targetNodeId: 'title:buzzy', move: 'pull-out', moveAmount: 0.4, transitionIn: { type: 'crossfade', duration: 0.4 }, note: 'Reveal full title' },
   ];
   return { scene, shots, duration };
 }
@@ -756,7 +758,7 @@ function buildOutro(message: string, start: number, id: (p: string) => string) {
   const nodes: SceneNode[] = [
     {
       id: 'outro:buzzy', name: 'Buzzy', kind: 'character', assetId: 'char.buzzy',
-      position: [0, 0.45, 0.4], rotation: [0, 0, 0], scale: [1.1, 1.1, 1.1],
+      position: [0, 0.2, 0.4], rotation: [0, 0, 0], scale: [0.95, 0.95, 0.95],
       tracks: mergeTracks(
         bakeAction('flap', { start, duration, family: 'winged-bug' }),
         bakeAction('hover', { start, duration, family: 'winged-bug' }),
@@ -769,8 +771,8 @@ function buildOutro(message: string, start: number, id: (p: string) => string) {
     },
     {
       id: 'outro:text', name: 'Message', kind: 'text', assetId: 'text',
-      position: [0, 3.2, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
-      params: { text: message, size: 0.44, color: 0xfff3c4, outlineColor: 0x5a3a12, fitWidth: 5.6 },
+      position: [0, 2.82, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
+      params: { text: message, size: 0.44, color: 0xfff3c4, outlineColor: 0x5a3a12, fitWidth: 5.0 },
       tracks: [
         { channel: 'scale.x', keys: [{ t: start + 0.2, v: -0.9, ease: 'bounce' }, { t: start + 1.0, v: 0 }] },
         { channel: 'scale.y', keys: [{ t: start + 0.2, v: -0.9, ease: 'bounce' }, { t: start + 1.05, v: 0 }] },
@@ -778,8 +780,8 @@ function buildOutro(message: string, start: number, id: (p: string) => string) {
     },
     {
       id: 'outro:cta', name: 'Call to action', kind: 'text', assetId: 'text',
-      position: [0, 2.55, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
-      params: { text: 'Subscribe for more stories!', size: 0.26, color: 0xffffff, outlineColor: 0x5a3a12, fitWidth: 4.6 },
+      position: [0, 2.4, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
+      params: { text: 'Subscribe for more stories!', size: 0.26, color: 0xffffff, outlineColor: 0x5a3a12, fitWidth: 4.2 },
       tracks: [
         { channel: 'scale.x', keys: [{ t: start + 1.5, v: -1, ease: 'step' }, { t: start + 1.6, v: 0.06, ease: 'easeInOut' }, { t: start + 2.2, v: 0 }] },
         { channel: 'scale.y', keys: [{ t: start + 1.5, v: -1, ease: 'step' }, { t: start + 1.6, v: 0.06, ease: 'easeInOut' }, { t: start + 2.2, v: 0 }] },
@@ -812,8 +814,8 @@ function buildOutro(message: string, start: number, id: (p: string) => string) {
   };
 
   const shots: Shot[] = [
-    { id: id('shot'), sceneId, start, duration: 3.4, framing: 'wide', targetNodeId: 'outro:buzzy', move: 'push-in', moveAmount: 0.4, transitionIn: { type: 'crossfade', duration: 0.5 }, note: 'Goodbye wave' },
-    { id: id('shot'), sceneId, start: start + 3.4, duration: duration - 3.4, framing: 'wide', targetNodeId: 'outro:buzzy', move: 'pull-out', note: 'End card with call to action' },
+    { id: id('shot'), sceneId, start, duration: 3.4, framing: 'two-shot', targetNodeId: 'outro:buzzy', move: 'static', transitionIn: { type: 'crossfade', duration: 0.5 }, note: 'Goodbye wave' },
+    { id: id('shot'), sceneId, start: start + 3.4, duration: duration - 3.4, framing: 'two-shot', targetNodeId: 'outro:buzzy', move: 'pull-out', moveAmount: 0.4, note: 'End card with call to action' },
   ];
   return { scene, shots, duration };
 }

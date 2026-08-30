@@ -22,7 +22,13 @@ export interface CharacterInstance {
   rest: Map<string, THREE.Euler>;
   face: FaceRig | null;
   rigFamily: RigFamily;
-  /** Nominal standing height in world units — used for auto camera framing. */
+  /**
+   * Distance from the node's origin to the top of the head, in world units.
+   *
+   * Camera framing is computed from this, so it has to be the *rendered*
+   * extent rather than a rough guess — an under-estimate crops heads in every
+   * wide and full shot.
+   */
   height: number;
   /**
    * Head radius. Close shots frame from this rather than from `height`: on a
@@ -301,7 +307,7 @@ function buildBee(p: CharacterParams, variant: 'buzzy' | 'plain' = 'buzzy'): Cha
   }
 
   root.scale.setScalar(p.scale ?? 1);
-  return { root, joints, rest, face, rigFamily: 'winged-bug', height: 1.55, headRadius: headR, idleSpinners };
+  return { root, joints, rest, face, rigFamily: 'winged-bug', height: 1.95, headRadius: headR, idleSpinners };
 }
 
 /* ------------------------------------------------------------------ *
@@ -380,7 +386,7 @@ function buildLadybird(p: CharacterParams): CharacterInstance {
   }
 
   root.scale.setScalar(p.scale ?? 0.95);
-  return { root, joints, rest, face, rigFamily: 'winged-bug', height: 1.5, headRadius: headR, idleSpinners };
+  return { root, joints, rest, face, rigFamily: 'winged-bug', height: 1.78, headRadius: headR, idleSpinners };
 }
 
 function buildButterfly(p: CharacterParams): CharacterInstance {
@@ -450,7 +456,7 @@ function buildButterfly(p: CharacterParams): CharacterInstance {
   }
 
   root.scale.setScalar(p.scale ?? 1);
-  return { root, joints, rest, face, rigFamily: 'winged-bug', height: 1.5, headRadius: headR, idleSpinners };
+  return { root, joints, rest, face, rigFamily: 'winged-bug', height: 1.78, headRadius: headR, idleSpinners };
 }
 
 /* ------------------------------------------------------------------ *
@@ -624,7 +630,7 @@ function buildHuman(p: CharacterParams, kind: 'kid' | 'adult'): CharacterInstanc
   root.scale.setScalar(p.scale ?? 1);
   return {
     root, joints, rest, face, rigFamily: 'biped',
-    height: kind === 'kid' ? 1.42 : 1.75,
+    height: kind === 'kid' ? 1.72 : 1.98,
     headRadius: headR,
     idleSpinners: [],
   };
@@ -733,7 +739,7 @@ function buildQuadruped(p: CharacterParams, kind: 'puppy' | 'kitten' | 'bunny'):
   }
 
   root.scale.setScalar(p.scale ?? 1);
-  return { root, joints, rest, face, rigFamily: 'quadruped', height: 0.8, headRadius: headR, idleSpinners: [] };
+  return { root, joints, rest, face, rigFamily: 'quadruped', height: 1.06, headRadius: headR, idleSpinners: [] };
 }
 
 /* ------------------------------------------------------------------ *
@@ -793,7 +799,7 @@ function buildBird(p: CharacterParams): CharacterInstance {
   }
 
   root.scale.setScalar(p.scale ?? 1);
-  return { root, joints, rest, face, rigFamily: 'bird', height: 0.95, headRadius: headR, idleSpinners };
+  return { root, joints, rest, face, rigFamily: 'bird', height: 0.98, headRadius: headR, idleSpinners };
 }
 
 function buildFrog(p: CharacterParams): CharacterInstance {
@@ -844,7 +850,7 @@ function buildFrog(p: CharacterParams): CharacterInstance {
   }
 
   root.scale.setScalar(p.scale ?? 1);
-  return { root, joints, rest, face, rigFamily: 'biped', height: 1.15, headRadius: headR, idleSpinners: [] };
+  return { root, joints, rest, face, rigFamily: 'biped', height: 1.22, headRadius: headR, idleSpinners: [] };
 }
 
 function buildCloud(p: CharacterParams): CharacterInstance {
@@ -873,7 +879,7 @@ function buildCloud(p: CharacterParams): CharacterInstance {
   }
 
   root.scale.setScalar(p.scale ?? 1);
-  return { root, joints, rest, face, rigFamily: 'blob', height: 1.1, headRadius: 0.34, idleSpinners: [] };
+  return { root, joints, rest, face, rigFamily: 'blob', height: 0.96, headRadius: 0.34, idleSpinners: [] };
 }
 
 function buildCaterpillar(p: CharacterParams): CharacterInstance {
@@ -950,7 +956,7 @@ function buildFish(p: CharacterParams): CharacterInstance {
   joints.get('topFin')!.add(top);
 
   root.scale.setScalar(p.scale ?? 1);
-  return { root, joints, rest, face, rigFamily: 'fish', height: 0.6, headRadius: headR, idleSpinners: [] };
+  return { root, joints, rest, face, rigFamily: 'fish', height: 0.82, headRadius: headR, idleSpinners: [] };
 }
 
 /* ------------------------------------------------------------------ *
