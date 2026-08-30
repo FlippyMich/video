@@ -42,6 +42,44 @@ class Headless {
     return { project, warnings: parsed.warnings, cast: parsed.cast };
   }
 
+  /**
+   * Every line that needs a voice recording, keyed the way `voiceTimings`
+   * expects. The pipeline records these, then rebuilds the project with the
+   * real durations so the cut follows the performance rather than an estimate.
+   */
+  listDialogue(source: string) {
+    const parsed = parseScript(source);
+    const out: { key: string; speaker: string; text: string; scene: string; sceneIndex: number; beatIndex: number }[] = [];
+    parsed.scenes.forEach((scene, sceneIndex) => {
+      scene.beats.forEach((beat, beatIndex) => {
+        if (beat.type !== 'dialogue' || !beat.text) return;
+        out.push({
+          key: `${sceneIndex}:${beatIndex}`,
+          speaker: beat.speaker ?? 'NARRATOR',
+          text: beat.text,
+          scene: scene.name,
+          sceneIndex,
+          beatIndex,
+        });
+      });
+    });
+    return { title: parsed.title, cast: parsed.cast, lines: out, warnings: parsed.warnings };
+  }
+
+  /** Sound and music cues, so the pipeline knows which files to synthesise. */
+  listCues(source: string) {
+    const parsed = parseScript(source);
+    const sfx = new Set<string>();
+    const music = new Set<string>();
+    for (const scene of parsed.scenes) {
+      for (const beat of scene.beats) {
+        if (beat.type === 'sfx' && beat.sound) sfx.add(beat.sound);
+        if (beat.type === 'music' && beat.sound) music.add(beat.sound);
+      }
+    }
+    return { sfx: [...sfx], music: [...music] };
+  }
+
   init(opts: HeadlessInit) {
     if (!this.project) throw new Error('Load a project before init()');
     this.player?.dispose();
@@ -76,10 +114,29 @@ class Headless {
     });
   }
 
-  renderFrame(t: number, format: 'jpeg' | 'png' = 'jpeg', quality = 0.94): string {
+  /**
+   * Draw a frame onto the output canvas and stop there.
+   *
+   * The production renderer wants the pixels as a Blob, not as a data URL —
+   * `toDataURL` costs ~490ms per 1080p frame against ~23ms for `toBlob`, which
+   * is the difference between a two-hour render and a ten-minute one. So the
+   * drawing and the encoding are separate calls, and the renderer only pays for
+   * the encoding it actually uses.
+   */
+  drawFrame(t: number): void {
     if (!this.player) throw new Error('init() first');
     this.player.render(t, 1 / (this.project?.meta.fps ?? 30));
-    return this.player.output.toDataURL(format === 'png' ? 'image/png' : 'image/jpeg', quality);
+  }
+
+  /** Draw and encode in one go. Convenient for stills; too slow for a film. */
+  renderFrame(t: number, format: 'jpeg' | 'png' = 'jpeg', quality = 0.94): string {
+    this.drawFrame(t);
+    return this.player!.output.toDataURL(format === 'png' ? 'image/png' : 'image/jpeg', quality);
+  }
+
+  /** The canvas the renderer should capture. */
+  get canvas(): HTMLCanvasElement | null {
+    return this.player?.output ?? null;
   }
 
   /** Time one frame without paying the encode cost, for benchmarking. */

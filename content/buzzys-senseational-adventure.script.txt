@@ -1,0 +1,225 @@
+# Title: Buzzy's Sense-ational Adventure!
+# Subtitle: Learning the five senses with Buzzy Bloom
+# Author: BloomStudio
+# Fps: 30
+
+// ---------------------------------------------------------------------------
+// A BloomStudio script. Everything here is plain text:
+//   ## starts a scene    [ ] is a stage direction    NAME: is dialogue
+//   @sfx @music @cam are instructions    ?? is an audience beat
+//   ~~ is a transition between shots
+// Open it in BloomStudio (Script → Import) to rebuild the whole film.
+// ---------------------------------------------------------------------------
+
+
+## Scene: The Garden Gate | theme=garden time=morning weather=clear seed=7
+
+@music: gentle-morning
+[Buzzy flies in and hovers, waving with both hands]
+@sfx: buzz-in
+BUZZY (excited): Hello, hello, HELLO, my friends! It's me — Buzzy!
+BUZZY (happy): Welcome back to the garden!
+?? Can you wave hello to Buzzy? | 3s | hand-icon | Hello!
+BUZZY (giggling): Oh, I saw that! What a lovely wave.
+@cam: close-up on BUZZY, push-in
+BUZZY (curious): Here's a big question. How do you know what's happening around you?
+?? How do you find things out? Have a think! | 3s | countdown
+[Lily walks in from the side, curious]
+BUZZY (happy): Lily! Just in time. How do we find out about the world?
+LILY (thinking): Ooh. With my eyes? I look at things.
+BUZZY (excited): Yes! And that's called a sense. Your sense of sight.
+LILY (surprised): A sense? Is there more than one?
+BUZZY (proud): There are five! Five senses, Lily. And today, we're going to find every single one.
+@sfx: sparkle
+LILY (excited): Five! Let's go and find them!
+?? Count with me — how many senses are we looking for? | 3s | countdown | Five!
+BUZZY (happy): Five it is. Come on, everybody. Let's have a sense-ational adventure!
+@sfx: whoosh
+~~ crossfade 0.5
+
+
+## Scene: Sense One — Seeing | theme=garden time=morning weather=rainbow seed=21
+
+@music: bright-discovery
+[Buzzy flies forward and points at the flowers]
+BUZZY (excited): Here we are! Sense number one.
+@cam: medium on BUZZY
+BUZZY: Everybody, put your hands over your eyes. Go on!
+?? Cover your eyes with your hands! | 3s | hand-icon
+BUZZY (curious): Can you see anything at all?
+LILY (giggling): Not a thing! It's all dark.
+BUZZY (happy): Now — open them up!
+@sfx: twinkle
+[Buzzy spreads both arms wide to present the garden]
+BUZZY (excited): Ta-daaa! Look at all this!
+LILY (surprised): Wow. The colours!
+BUZZY (proud): That's your sense of SIGHT. Your eyes let you see colours, and shapes, and how big things are.
+@cam: wide on LILY, pan-right
+BUZZY: Let's practise. I'll say a colour, and you find it.
+BUZZY (excited): Can you find something RED?
+?? Point at something red! | 3s | countdown | Red!
+LILY (proud): I found a red tulip!
+BUZZY (happy): Beautiful. Now something YELLOW.
+?? Point at something yellow! | 3s | countdown | Yellow!
+LILY (excited): The middle of the daisy is yellow!
+BUZZY (curious): Now here's the tricky one. Something GREEN.
+?? Where is something green? | 3s | countdown | Green!
+LILY (happy): That's easy. The grass, the leaves, the stems — green, green, green!
+BUZZY (proud): Brilliant looking, everybody. That's sense number one: seeing.
+@sfx: ding
+?? Hold up one finger. One sense found! | 3s | countdown | One!
+~~ crossfade 0.5
+
+
+## Scene: Sense Two — Hearing | theme=pond time=morning weather=clear seed=34
+
+@music: playful-curious
+[Buzzy flies down to the pond and lands beside Pip]
+@sfx: water-lap
+PIP (happy): Tweet! Tweet-tweet!
+BUZZY (surprised): Oh! Did you hear that?
+LILY (curious): I did! Who was that?
+PIP (excited): It was me! Hello, I'm Pip.
+BUZZY (excited): Everybody, this is sense number two.
+@cam: close-up on BUZZY
+BUZZY: Close your eyes for me. Now — what can you hear?
+?? Close your eyes and listen! | 3.2s
+@sfx: bird-song
+LILY (happy): I can hear Pip singing!
+BUZZY: And the water going splish, splash.
+PIP (proud): And the wind in the leaves. Shhhhhh.
+BUZZY (proud): Open your eyes! That was your sense of HEARING. Your ears did all of that, all by themselves.
+LILY (surprised): My ears were working the whole time and I didn't even know!
+@sfx: bell
+[Buzzy reaches out and rings a little bell]
+BUZZY (excited): Now, listen very carefully. Is this sound LOUD, or is it QUIET?
+@sfx: bell-soft
+?? Loud or quiet? | 3s | answer-pop | Quiet!
+BUZZY (happy): Quiet! Well listened. And this one?
+@sfx: drum-loud
+?? Loud or quiet? | 3s | answer-pop | Loud!
+LILY (giggling): That one made me jump!
+PIP (excited): Let's make a sound together! Can you clap your hands?
+?? Clap along with us! | 4.5s | bouncing-ball
+@sfx: clapping
+BUZZY (proud): What a wonderful noise. That's sense number two: hearing.
+@sfx: ding
+?? Hold up two fingers. Two senses! | 3s | countdown | Two!
+~~ crossfade 0.5
+
+
+## Scene: Sense Three — Smelling | theme=garden time=noon weather=petals seed=48
+
+@music: gentle-wonder
+[Buzzy flies over to a big flower and leans in to sniff it]
+@sfx: sniff
+BUZZY (excited): Mmmmm. Oh, my goodness. Come and smell this.
+LILY (curious): What is it?
+BUZZY (happy): It's the flower. Take a big breath in through your nose.
+?? Take a deep breath in through your nose! | 3.2s | hand-icon
+[Lily leans in and sniffs the flower]
+LILY (excited): Ohhh! It's sweet! Like honey!
+BUZZY (proud): That's sense number three. SMELLING. Your nose is doing that.
+BUZZY (curious): Some smells are lovely. And some are... not so lovely.
+[Dotty the ladybird arrives, holding her nose]
+DOTTY (yucky): Ugh! Has anybody been near the compost heap?
+BUZZY (giggling): Oh dear. Dotty found a not-so-lovely one.
+@sfx: comedy-pop
+?? What's your favourite smell? Tell me! | 3.2s
+LILY (happy): Mine is bread. Warm bread from the oven.
+BUZZY (excited): And mine is flowers, of course. I'm a bee!
+BUZZY (proud): Three senses found. Seeing, hearing, and smelling.
+@sfx: ding
+?? Hold up three fingers! | 3s | countdown | Three!
+~~ crossfade 0.5
+
+
+## Scene: Sense Four — Tasting | theme=meadow time=afternoon weather=clear seed=63
+
+@music: cheeky-fun
+[Buzzy hovers over a picnic basket, presenting it]
+BUZZY (excited): Now this one — this one is my favourite.
+LILY (curious): What's in the basket, Buzzy?
+[Lily reaches into the basket and takes out a strawberry]
+LILY (excited): A strawberry!
+BUZZY (happy): Take a little taste. Just a little one.
+[Lily tastes the strawberry and wiggles happily]
+@sfx: nibble
+LILY (excited): Mmmm! It's SWEET!
+BUZZY (proud): Sense number four. TASTING. Your tongue knows sweet, and salty, and sour.
+DOTTY (curious): Sour? What's sour?
+BUZZY (giggling): Oh, Dotty. You're going to find out.
+[Buzzy hands Dotty a lemon]
+DOTTY (curious): It's yellow. It looks lovely.
+?? Do you think a lemon is sweet or sour? | 3s | answer-pop | Sour!
+[Dotty bites the lemon and pulls a face]
+@sfx: comedy-boing
+DOTTY (yucky): Oooooooh! That's SOUR!
+BUZZY (happy): And remember — we only taste things we know are safe.
+LILY (happy): Always ask a grown-up first!
+BUZZY (proud): Exactly right. That's four!
+@sfx: ding
+?? Hold up four fingers! | 3s | countdown | Four!
+~~ crossfade 0.5
+
+
+## Scene: Sense Five — Touching | theme=forest time=afternoon weather=clear seed=77
+
+@music: soft-explore
+[Buzzy flies into the forest and lands on a mossy log]
+BUZZY (curious): One more to find. Just one!
+LILY (excited): The last sense! What is it?
+[Buzzy reaches out and touches the moss carefully]
+BUZZY (excited): Feel this moss. Go on, reach out with me.
+?? Reach out your hand and touch something soft! | 3.2s | hand-icon
+LILY (happy): It's soft! Like a little cushion.
+BUZZY (proud): That's sense number five. TOUCHING. And your skin does it.
+[Dotty picks up a pinecone]
+DOTTY (surprised): Ooh! This one isn't soft at all!
+BUZZY (curious): What does it feel like, Dotty?
+DOTTY: Bumpy. And a bit prickly.
+BUZZY (happy): Bumpy and prickly. Lovely describing.
+[Lily strokes a smooth rock]
+LILY (happy): And this rock is smooth. And cold!
+BUZZY (excited): Smooth. Cold. Rough. Warm. Soft. Your skin knows them all.
+?? Can you feel your own cheek? Is it soft? | 3.2s | hand-icon
+BUZZY (giggling): Mine is fuzzy! I'm a bee, remember.
+BUZZY (proud): And that's five! We found all five!
+@sfx: fanfare
+~~ crossfade 0.6
+
+
+## Scene: The Five Senses Song | theme=garden time=afternoon weather=rainbow seed=90
+
+@music: sing-along
+[Buzzy flies to the middle of the garden with everyone around]
+BUZZY (excited): We did it! Let's count them all together.
+@cam: two-shot on BUZZY
+BUZZY (happy): Number one — my eyes can SEE.
+?? Point to your eyes! | 3s | hand-icon | See!
+BUZZY: Number two — my ears can HEAR.
+?? Point to your ears! | 3s | hand-icon | Hear!
+BUZZY: My nose can SMELL, and my tongue can TASTE.
+?? Point to your nose, then your tongue! | 3s | hand-icon | Smell and taste!
+BUZZY (excited): And number five — my skin can TOUCH.
+?? Wiggle your fingers! | 3s | hand-icon | Touch!
+LILY (excited): Five senses! Let's sing it!
+@sfx: music-start
+BUZZY (giggling): Sing along with me, everybody!
+?? Sing along! Eyes to see and ears to hear! | 4.5s | bouncing-ball
+BUZZY (happy): Eyes to see and ears to hear,
+BUZZY: A nose to smell the flowers near,
+LILY (happy): A tongue to taste our lunch today,
+DOTTY (excited): And skin to feel along the way!
+BUZZY (excited): Five senses, five senses, one two three four five!
+LILY (giggling): Five senses, five senses, they help us feel alive!
+@sfx: cheer
+[Everybody cheers and jumps]
+@cam: close-up on BUZZY, push-in
+BUZZY (happy): So next time you're outside, have a go.
+BUZZY: What can you see? What can you hear?
+BUZZY (curious): What can you smell, and what can you touch?
+BUZZY (excited): Thank you for coming on our sense-ational adventure!
+BUZZY (happy): I'll see you next time. Bye bye, friends!
+?? Wave goodbye to Buzzy! | 3s | hand-icon | Bye bye!
+@sfx: sparkle

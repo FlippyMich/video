@@ -40,7 +40,7 @@ export interface BuildOptions {
   width?: number;
   height?: number;
   /** Real recorded timings, keyed by `sceneIndex:beatIndex`. */
-  voiceTimings?: Record<string, { duration: number; phonemes?: PhonemeTiming[]; src?: string }>;
+  voiceTimings?: Record<string, { duration: number; offset?: number; phonemes?: PhonemeTiming[]; src?: string }>;
   /** Words per minute when no recording exists yet. */
   wpm?: number;
   /** Seconds of silence between lines. */
@@ -63,7 +63,7 @@ const NAME_HINTS: [RegExp, string][] = [
   [/pup|dog|rex|patch/i, 'char.puppy'],
   [/kitt|cat\b|mittens/i, 'char.kitten'],
   [/bun|rabbit|hop/i, 'char.bunny'],
-  [/bird|robin|chirp|tweet/i, 'char.bird'],
+  [/bird|robin|chirp|tweet|\bpip\b|wren|finch/i, 'char.bird'],
   [/frog|hop|ribbit/i, 'char.frog'],
   [/cloud|nimbus|puff/i, 'char.cloud'],
   [/cater|worm|wiggle/i, 'char.caterpillar'],
@@ -318,7 +318,9 @@ function buildScene(
   // Open every scene on a wide establishing shot — the audience needs to know
   // where they are before they're asked to look at a face.
   pushShot(t, 'wide', present[0]?.name ?? null, 'push-in', `Establish: ${parsed.name}`);
-  const establishDuration = 1.6;
+  // Long enough to read the location, short enough that a young viewer doesn't
+  // start looking away before anyone speaks.
+  const establishDuration = 1.15;
   t += establishDuration;
 
   parsed.beats.forEach((beat, beatIndex) => {
@@ -513,7 +515,8 @@ function buildScene(
         audio.push({
           id: id('aud'), role: 'dialogue', lane: 0,
           src: timing?.src ?? `audio/vo/${sceneIndex + 1}-${beatIndex + 1}-${slug(speaker)}.wav`,
-          start: t, duration, gain: 1, label: `${speaker}: ${truncate(beat.text ?? '', 40)}`,
+          start: t, duration, offset: timing?.offset, gain: 1,
+          label: `${speaker}: ${truncate(beat.text ?? '', 40)}`,
           speakerNodeId: acc?.node.id,
         });
         subtitles.push(...splitSubtitle(beat.text ?? '', t, duration, castByName.get(speaker)?.displayName, id));
@@ -684,7 +687,7 @@ function buildTitleCard(title: string, subtitle: string, start: number, id: (p: 
   const nodes: SceneNode[] = [
     {
       id: 'title:buzzy', name: 'Buzzy', kind: 'character', assetId: 'char.buzzy',
-      position: [0, 0.75, 0.6], rotation: [0, 0, 0], scale: [1.1, 1.1, 1.1],
+      position: [0, 0.45, 0.6], rotation: [0, 0, 0], scale: [1.1, 1.1, 1.1],
       tracks: mergeTracks(
         bakeAction('flap', { start, duration, family: 'winged-bug' }),
         bakeAction('hover', { start, duration, family: 'winged-bug', intensity: 1 }),
@@ -697,8 +700,8 @@ function buildTitleCard(title: string, subtitle: string, start: number, id: (p: 
     },
     {
       id: 'title:text', name: 'Title', kind: 'text', assetId: 'text',
-      position: [0, 2.35, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
-      params: { text: title, size: 0.52, color: 0xfff3c4, outlineColor: 0x5a3a12 },
+      position: [0, 3.15, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
+      params: { text: title, size: 0.5, color: 0xfff3c4, outlineColor: 0x5a3a12, fitWidth: 6.4 },
       tracks: [
         { channel: 'scale.x', keys: [{ t: start + 0.5, v: -0.9, ease: 'bounce' }, { t: start + 1.3, v: 0 }] },
         { channel: 'scale.y', keys: [{ t: start + 0.5, v: -0.9, ease: 'bounce' }, { t: start + 1.35, v: 0 }] },
@@ -707,8 +710,8 @@ function buildTitleCard(title: string, subtitle: string, start: number, id: (p: 
     },
     {
       id: 'title:sub', name: 'Subtitle', kind: 'text', assetId: 'text',
-      position: [0, 1.72, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
-      params: { text: subtitle, size: 0.2, color: 0xffffff, outlineColor: 0x5a3a12 },
+      position: [0, 2.5, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
+      params: { text: subtitle, size: 0.24, color: 0xffffff, outlineColor: 0x5a3a12, fitWidth: 4.4 },
       tracks: [
         { channel: 'position.y', keys: [{ t: start + 1.4, v: -0.4, ease: 'easeOut' }, { t: start + 2.1, v: 0 }] },
         { channel: 'scale.x', keys: [{ t: start + 1.3, v: -1, ease: 'step' }, { t: start + 1.4, v: 0 }] },
@@ -735,8 +738,10 @@ function buildTitleCard(title: string, subtitle: string, start: number, id: (p: 
   };
 
   const shots: Shot[] = [
-    { id: id('shot'), sceneId, start, duration: 2.6, framing: 'full', targetNodeId: 'title:buzzy', move: 'push-in', note: 'Logo animation in' },
-    { id: id('shot'), sceneId, start: start + 2.6, duration: duration - 2.6, framing: 'wide', targetNodeId: 'title:buzzy', move: 'pull-out', transitionIn: { type: 'crossfade', duration: 0.4 }, note: 'Reveal full title' },
+    // Both shots stay wide: the title has to fit inside the frame, and a
+    // tighter opening would crop the wordmark before it finished animating on.
+    { id: id('shot'), sceneId, start, duration: 2.6, framing: 'wide', targetNodeId: 'title:buzzy', move: 'push-in', moveAmount: 0.5, note: 'Logo animation in' },
+    { id: id('shot'), sceneId, start: start + 2.6, duration: duration - 2.6, framing: 'wide', targetNodeId: 'title:buzzy', move: 'pull-out', moveAmount: 0.6, transitionIn: { type: 'crossfade', duration: 0.4 }, note: 'Reveal full title' },
   ];
   return { scene, shots, duration };
 }
@@ -747,7 +752,7 @@ function buildOutro(message: string, start: number, id: (p: string) => string) {
   const nodes: SceneNode[] = [
     {
       id: 'outro:buzzy', name: 'Buzzy', kind: 'character', assetId: 'char.buzzy',
-      position: [0, 0.7, 0.4], rotation: [0, 0, 0], scale: [1.1, 1.1, 1.1],
+      position: [0, 0.45, 0.4], rotation: [0, 0, 0], scale: [1.1, 1.1, 1.1],
       tracks: mergeTracks(
         bakeAction('flap', { start, duration, family: 'winged-bug' }),
         bakeAction('hover', { start, duration, family: 'winged-bug' }),
@@ -760,8 +765,8 @@ function buildOutro(message: string, start: number, id: (p: string) => string) {
     },
     {
       id: 'outro:text', name: 'Message', kind: 'text', assetId: 'text',
-      position: [0, 2.45, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
-      params: { text: message, size: 0.4, color: 0xfff3c4, outlineColor: 0x5a3a12 },
+      position: [0, 3.2, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
+      params: { text: message, size: 0.44, color: 0xfff3c4, outlineColor: 0x5a3a12, fitWidth: 5.6 },
       tracks: [
         { channel: 'scale.x', keys: [{ t: start + 0.2, v: -0.9, ease: 'bounce' }, { t: start + 1.0, v: 0 }] },
         { channel: 'scale.y', keys: [{ t: start + 0.2, v: -0.9, ease: 'bounce' }, { t: start + 1.05, v: 0 }] },
@@ -769,8 +774,8 @@ function buildOutro(message: string, start: number, id: (p: string) => string) {
     },
     {
       id: 'outro:cta', name: 'Call to action', kind: 'text', assetId: 'text',
-      position: [0, 1.75, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
-      params: { text: 'Subscribe for more stories!', size: 0.22, color: 0xffffff, outlineColor: 0x5a3a12 },
+      position: [0, 2.55, -0.4], rotation: [0, 0, 0], scale: [1, 1, 1],
+      params: { text: 'Subscribe for more stories!', size: 0.26, color: 0xffffff, outlineColor: 0x5a3a12, fitWidth: 4.6 },
       tracks: [
         { channel: 'scale.x', keys: [{ t: start + 1.5, v: -1, ease: 'step' }, { t: start + 1.6, v: 0.06, ease: 'easeInOut' }, { t: start + 2.2, v: 0 }] },
         { channel: 'scale.y', keys: [{ t: start + 1.5, v: -1, ease: 'step' }, { t: start + 1.6, v: 0.06, ease: 'easeInOut' }, { t: start + 2.2, v: 0 }] },
@@ -803,7 +808,7 @@ function buildOutro(message: string, start: number, id: (p: string) => string) {
   };
 
   const shots: Shot[] = [
-    { id: id('shot'), sceneId, start, duration: 3.4, framing: 'full', targetNodeId: 'outro:buzzy', move: 'static', transitionIn: { type: 'crossfade', duration: 0.5 }, note: 'Goodbye wave' },
+    { id: id('shot'), sceneId, start, duration: 3.4, framing: 'wide', targetNodeId: 'outro:buzzy', move: 'push-in', moveAmount: 0.4, transitionIn: { type: 'crossfade', duration: 0.5 }, note: 'Goodbye wave' },
     { id: id('shot'), sceneId, start: start + 3.4, duration: duration - 3.4, framing: 'wide', targetNodeId: 'outro:buzzy', move: 'pull-out', note: 'End card with call to action' },
   ];
   return { scene, shots, duration };

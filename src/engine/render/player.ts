@@ -33,10 +33,22 @@ export interface PlayerOptions {
   canvas?: HTMLCanvasElement;
 }
 
+/**
+ * Quality tiers.
+ *
+ * `pixelRatio` is a *supersample* factor: the 3D pass renders at this multiple
+ * of the output size and the 2D composite scales it down. On a software
+ * rasteriser that is markedly cheaper than MSAA for the same edge quality —
+ * MSAA multiplies the whole fragment cost, supersampling only multiplies the
+ * pixels, and the downscale is a single filtered blit.
+ *
+ * `shadowMap` is squared fill: 2048 costs twice as much as the entire 1080p
+ * main pass, which is not a sensible way to spend a frame on a cartoon.
+ */
 const QUALITY = {
-  draft: { shadows: false, antialias: false, pixelRatio: 0.75 },
-  good: { shadows: true, antialias: true, pixelRatio: 1 },
-  best: { shadows: true, antialias: true, pixelRatio: 1 },
+  draft: { shadows: false, antialias: false, pixelRatio: 0.75, shadowMap: 512 },
+  good: { shadows: true, antialias: false, pixelRatio: 1, shadowMap: 1024 },
+  best: { shadows: true, antialias: false, pixelRatio: 1, shadowMap: 1024 },
 };
 
 export class Player {
@@ -79,7 +91,10 @@ export class Player {
     this.renderer.setPixelRatio(1);
     this.renderer.setSize(glCanvas.width, glCanvas.height, false);
     this.renderer.shadowMap.enabled = q.shadows;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // PCF rather than PCFSoft: the soft variant takes many more taps per
+    // fragment, and on a stylised render with one key light nobody can see the
+    // difference.
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.NoToneMapping;
 
@@ -118,8 +133,10 @@ export class Player {
     const doc = this.project.scenes.find((s) => s.id === sceneId);
     if (!doc) return null;
     const spec = this.opts.chromaKey ? { ...doc, environment: { ...doc.environment, chromaKey: true } } : doc;
+    const q = QUALITY[this.opts.quality];
     const rt = new SceneRuntime(spec, {
-      shadows: QUALITY[this.opts.quality].shadows && !this.opts.chromaKey,
+      shadows: q.shadows && !this.opts.chromaKey,
+      shadowMap: q.shadowMap,
       aspect: this.opts.width / this.opts.height,
     });
     this.scenes.set(sceneId, rt);
@@ -447,16 +464,61 @@ export class Player {
         break;
       }
       case 'hand-icon': {
-        const wobble = Math.sin(t * 7) * 0.22;
-        const x = W - 210 * S;
-        const y = H / 2;
+        // Drawn with paths, not an emoji glyph: headless renderers and school
+        // Chromebooks routinely lack a colour emoji font, and a tofu box in the
+        // middle of the frame is worse than no cue at all.
+        const wobble = Math.sin(t * 7) * 0.26;
         ctx.save();
-        ctx.translate(x, y);
+        ctx.translate(W - 250 * S, H * 0.44);
         ctx.rotate(wobble);
-        ctx.font = `${170 * S}px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('👋', 0, 0);
+        ctx.scale(S * 1.35, S * 1.35);
+        // A soft disc behind it, so the cue reads against foliage as well as
+        // against sky.
+        ctx.globalAlpha = alpha * 0.75;
+        ctx.beginPath();
+        ctx.arc(0, 0, 140, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,253,246,0.85)';
+        ctx.fill();
+        ctx.globalAlpha = alpha;
+        ctx.lineWidth = 11;
+        ctx.strokeStyle = '#39304a';
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+
+        // Motion arcs first, so the hand sits on top of them.
+        ctx.strokeStyle = '#ffc23d';
+        ctx.lineWidth = 9;
+        for (let i = 1; i <= 3; i++) {
+          ctx.globalAlpha = alpha * (0.8 - i * 0.18);
+          ctx.beginPath();
+          ctx.arc(0, 10, 92 + i * 22, -2.45, -1.05);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = alpha;
+
+        ctx.strokeStyle = '#39304a';
+        ctx.lineWidth = 11;
+        ctx.fillStyle = '#ffdcc0';
+        const bar = (x: number, y: number, w: number, h: number, rot: number) => {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(rot);
+          ctx.beginPath();
+          roundRect(ctx, -w / 2, 0, w, h, w / 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        };
+        // Fingers, then the palm over their roots so no seams show.
+        bar(-34, -72, 25, 78, 0);
+        bar(-7, -86, 25, 92, 0);
+        bar(20, -78, 25, 84, 0);
+        bar(45, -56, 23, 64, 0.24);
+        bar(-62, -30, 25, 62, -0.55);
+        ctx.beginPath();
+        roundRect(ctx, -54, -18, 108, 112, 34);
+        ctx.fill();
+        ctx.stroke();
         ctx.restore();
         break;
       }

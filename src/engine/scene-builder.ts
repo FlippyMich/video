@@ -55,15 +55,15 @@ export class SceneRuntime {
   private doc: SceneDoc;
   private lookTarget: THREE.Vector3 | null = null;
 
-  constructor(doc: SceneDoc, opts: { shadows?: boolean; aspect?: number } = {}) {
+  constructor(doc: SceneDoc, opts: { shadows?: boolean; aspect?: number; shadowMap?: number } = {}) {
     this.doc = doc;
     this.defaultCamera = new THREE.PerspectiveCamera(38, opts.aspect ?? 16 / 9, 0.1, 200);
     this.defaultCamera.position.set(0, 1.7, 6);
     this.defaultCamera.lookAt(0, 1.1, 0);
-    this.build(opts.shadows ?? true);
+    this.build(opts.shadows ?? true, opts.shadowMap ?? 1024);
   }
 
-  private build(shadows: boolean) {
+  private build(shadows: boolean, shadowMap: number) {
     const env = buildEnvironment(this.doc.environment);
     this.environment = env;
     this.scene.add(env.root);
@@ -79,9 +79,11 @@ export class SceneRuntime {
     key.position.copy(env.sunDirection).multiplyScalar(1.4);
     if (shadows && !this.doc.environment.chromaKey) {
       key.castShadow = true;
-      key.shadow.mapSize.set(2048, 2048);
+      key.shadow.mapSize.set(shadowMap, shadowMap);
       const c = key.shadow.camera as THREE.OrthographicCamera;
-      c.left = -12; c.right = 12; c.top = 12; c.bottom = -12; c.near = 0.5; c.far = 60;
+      // Tight enough that the map's resolution lands on the characters rather
+      // than on empty meadow. Anything outside simply doesn't cast.
+      c.left = -9; c.right = 9; c.top = 9; c.bottom = -9; c.near = 0.5; c.far = 48;
       key.shadow.bias = -0.0012;
       key.shadow.normalBias = 0.03;
     }
@@ -144,6 +146,7 @@ export class SceneRuntime {
             color: Number(doc.params?.color ?? 0xffffff),
             outlineColor: Number(doc.params?.outlineColor ?? 0x39304a),
             align: (doc.params?.align as 'left' | 'center' | 'right') ?? 'center',
+            fitWidth: doc.params?.fitWidth === undefined ? undefined : Number(doc.params.fitWidth),
           },
         );
         object.add(mesh);

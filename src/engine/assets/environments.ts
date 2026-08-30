@@ -175,21 +175,29 @@ const THEMES: Record<EnvironmentTheme, ThemeBuilder> = {
 
   pond: (spec, rand, root) => {
     root.add(groundDisc(PALETTE.leaf));
-    const water = new THREE.Mesh(geo.circle(6, 40), toon({ color: PALETTE.water, transparent: true, opacity: 0.9 }));
+    // The pool sits behind the acting area. Centred on the origin it swallows
+    // the stage, and every character ends up standing in the water.
+    const pondZ = -7.5;
+    const water = new THREE.Mesh(geo.circle(5.5, 40), toon({ color: PALETTE.water, transparent: true, opacity: 0.9 }));
     water.rotation.x = -Math.PI / 2;
-    water.position.y = 0.02;
+    water.position.set(0, 0.02, pondZ);
     root.add(water);
-    const rim = new THREE.Mesh(geo.torus(6, 0.24, 40), toon(PALETTE.sand));
+    const rim = new THREE.Mesh(geo.torus(5.5, 0.24, 40), toon(PALETTE.sand));
     rim.rotation.x = -Math.PI / 2;
-    rim.position.y = 0.04;
+    rim.position.set(0, 0.04, pondZ);
     root.add(rim);
-    scatter(root, rand, 7, 1.5, 5, (i, r) => {
-      const p = buildProp('prop.lilypad', { seed: i * 7 + spec.seed, scale: 0.8 + r() * 0.6 });
-      if (p) p.position.y = 0.05;
-      return p;
-    });
-    scatter(root, rand, 14, 6.4, 12, (i, r) => buildProp('prop.grass-tuft', { seed: i * 5 + spec.seed, scale: 1 + r() }));
-    scatter(root, rand, 4, 7, 13, (i) => buildProp('prop.tree', { seed: i * 19 + spec.seed }));
+    for (let i = 0; i < 7; i++) {
+      const pad = buildProp('prop.lilypad', { seed: i * 7 + spec.seed, scale: 0.8 + rand() * 0.6 });
+      if (!pad) continue;
+      const a = rand() * Math.PI * 2;
+      const r = 1 + Math.sqrt(rand()) * 3.4;
+      pad.position.set(Math.cos(a) * r, 0.05, pondZ + Math.sin(a) * r);
+      root.add(pad);
+    }
+    scatter(root, rand, 16, 2.5, 11, (i, r) => buildProp('prop.grass-tuft', { seed: i * 5 + spec.seed, scale: 1 + r() }));
+    scatter(root, rand, 4, 8, 13, (i) => buildProp('prop.tree', { seed: i * 19 + spec.seed }));
+    const reeds = buildProp('prop.grass-tuft', { seed: spec.seed + 3, scale: 2.4 });
+    if (reeds) { reeds.position.set(-3.4, 0, -3.2); root.add(reeds); }
     hills(root, rand, PALETTE.leaf, 6, 22);
     return {};
   },

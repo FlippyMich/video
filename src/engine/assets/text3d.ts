@@ -28,6 +28,12 @@ export interface TextOptions {
   fontWeight?: number;
   /** Extra letter spacing, in ems. Kids' titles want a little air. */
   tracking?: number;
+  /**
+   * Maximum width in world units. The mesh is scaled down to fit rather than
+   * re-laid-out, so a long title shrinks instead of running off the screen —
+   * which is what actually happens to titles nobody measured.
+   */
+  fitWidth?: number;
   maxWidth?: number;
 }
 
@@ -47,7 +53,11 @@ interface RenderedText {
   height: number;
 }
 
-function renderToCanvas(text: string, o: Required<Omit<TextOptions, 'maxWidth'>> & { maxWidth?: number }): RenderedText {
+type LayoutOptions = Required<Omit<TextOptions, 'maxWidth' | 'fitWidth'>> & {
+  maxWidth?: number;
+};
+
+function renderToCanvas(text: string, o: LayoutOptions): RenderedText {
   const lines = text.split('\n');
   const fontPx = Math.max(8, Math.round(o.size * PIXELS_PER_UNIT));
   const lineHeight = fontPx * 1.24;
@@ -122,6 +132,7 @@ export function buildTextMesh(text: string, options: TextOptions = {}): THREE.Ob
     tracking: options.tracking ?? 0.02,
     maxWidth: options.maxWidth,
   };
+  const fitWidth = options.fitWidth;
 
   const group = new THREE.Group();
   group.name = 'text';
@@ -149,6 +160,9 @@ export function buildTextMesh(text: string, options: TextOptions = {}): THREE.Ob
   face.renderOrder = 1;
   group.add(face);
 
+  if (fitWidth && width > fitWidth) {
+    group.scale.setScalar(fitWidth / width);
+  }
   group.userData.textWidth = width;
   group.userData.textHeight = height;
   group.userData.dispose = () => texture.dispose();
