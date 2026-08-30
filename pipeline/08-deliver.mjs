@@ -32,6 +32,20 @@ const ff = (args, label) => {
   if (r.status !== 0) throw new Error(`${label} failed (ffmpeg ${r.status})`);
 };
 
+/**
+ * Move a silent picture render out of the deliverables, without deleting it.
+ *
+ * It is an intermediate and shouldn't sit next to the finished files — but it
+ * cost an hour of rendering, and if the mix later needs a fix, re-muxing takes
+ * seconds while re-rendering does not.
+ */
+const retire = (file) => {
+  if (!fs.existsSync(file)) return;
+  const dir = path.join(VIDEO, 'intermediate');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.renameSync(file, path.join(dir, path.basename(file)));
+};
+
 const need = (file, what) => {
   if (!fs.existsSync(file)) {
     console.error(`  Missing ${what}: ${path.relative(ROOT, file)}`);
@@ -44,6 +58,7 @@ const MUTE = path.join(VIDEO, `${SLUG}-mute.mp4`);
 const GREEN_MUTE = path.join(VIDEO, `${SLUG}-greenscreen.mp4`);
 const MIX = path.join(AUDIO, 'full-mix.wav');
 const SRT = path.join(CAPTIONS, `${SLUG}.en.srt`);
+const ASS = path.join(CAPTIONS, `${SLUG}.en.ass`);
 
 need(MUTE, 'the master picture render');
 need(MIX, 'the audio mix');
@@ -74,19 +89,16 @@ ff([
  * Burned-in captions
  * ------------------------------------------------------------------ */
 
-if (fs.existsSync(SRT)) {
+const subtitleFile = fs.existsSync(ASS) ? ASS : fs.existsSync(SRT) ? SRT : null;
+if (subtitleFile) {
   const CAPTIONED = path.join(VIDEO, `${SLUG}-1080p-captions.mp4`);
   console.log('  captioned cut…');
-  // Styled to match the captions the renderer draws: heavy outline, no box,
-  // sitting inside the title-safe area.
-  const style = [
-    'FontName=Nunito', 'FontSize=26', 'PrimaryColour=&H00FFFFFF',
-    'OutlineColour=&HE0140F1A', 'BorderStyle=1', 'Outline=3', 'Shadow=0',
-    'Alignment=2', 'MarginV=60',
-  ].join(',');
+  // The .ass carries its own PlayRes and style, matched to the captions the
+  // renderer draws. Burning the .srt instead means letting the converter
+  // invent a 384x288 script and scaling every size against it.
   ff([
     '-i', MASTER,
-    '-vf', `subtitles='${SRT.replace(/'/g, "'\\''")}':force_style='${style}'`,
+    '-vf', `subtitles='${subtitleFile.replace(/'/g, "'\\''")}'`,
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
     '-c:a', 'copy',
     '-movflags', '+faststart',
@@ -110,12 +122,12 @@ if (fs.existsSync(GREEN_MUTE)) {
     '-movflags', '+faststart',
     GREEN,
   ], 'green-screen mux');
-  fs.rmSync(GREEN_MUTE, { force: true });
+  retire(GREEN_MUTE);
 } else {
   console.log('  (no green-screen render found — run `node pipeline/03-render.mjs --green`)');
 }
 
-fs.rmSync(MUTE, { force: true });
+retire(MUTE);
 
 /* ------------------------------------------------------------------ *
  * A poster frame, and the report
@@ -128,6 +140,7 @@ ff(['-ss', '96', '-i', MASTER, '-frames:v', '1', '-q:v', '2', POSTER], 'poster f
 console.log('\n  Delivered:');
 for (const f of fs.readdirSync(VIDEO).sort()) {
   const p = path.join(VIDEO, f);
+  if (fs.statSync(p).isDirectory()) continue;
   const size = fs.statSync(p).size;
   let extra = '';
   try {

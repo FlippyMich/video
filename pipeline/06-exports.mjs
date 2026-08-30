@@ -38,6 +38,52 @@ function timecode(t, sep = ',') {
   return `${pad(h)}:${pad(m)}:${pad(s)}${sep}${pad(ms, 3)}`;
 }
 
+/**
+ * An Advanced SubStation file for burning in.
+ *
+ * Written directly rather than converted from the SRT, because the conversion
+ * has no resolution to work from and falls back to a 384x288 script — against
+ * which every font size and margin is silently scaled by 3.75x. Declaring
+ * PlayRes here makes the burned-in captions match the ones the renderer draws.
+ */
+function writeAss(cues) {
+  const { width, height } = project.meta;
+  const stamp = (t) => {
+    const h = Math.floor(t / 3600);
+    const m = Math.floor((t % 3600) / 60);
+    const s = (t % 60).toFixed(2).padStart(5, '0');
+    return `${h}:${pad(m)}:${s}`;
+  };
+  // ASS colours are &HAABBGGRR, and the alpha runs backwards: 00 is opaque.
+  const head = [
+    '[Script Info]',
+    'ScriptType: v4.00+',
+    'WrapStyle: 0',
+    'ScaledBorderAndShadow: yes',
+    `PlayResX: ${width}`,
+    `PlayResY: ${height}`,
+    '',
+    '[V4+ Styles]',
+    'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, ' +
+      'Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, ' +
+      'Shadow, Alignment, MarginL, MarginR, MarginV, Encoding',
+    // Sizes are in the PlayRes space above, so these are real pixels at 1080p.
+    'Style: Bloom,DejaVu Sans,54,&H00FFFFFF,&H00FFFFFF,&H00140F1A,&H00000000,' +
+      '-1,0,0,0,100,100,0,0,1,7,0,2,150,150,72,1',
+    '',
+    '[Events]',
+    'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
+  ];
+  const events = cues
+    .filter((c) => c.end > c.start)
+    .map((c) => `Dialogue: 0,${stamp(c.start)},${stamp(c.end)},Bloom,,0,0,0,,` +
+      c.text.replace(/\n/g, '\\N').replace(/\r/g, ''));
+  fs.writeFileSync(
+    path.join(CAPTIONS, 'buzzys-senseational-adventure.en.ass'),
+    `${[...head, ...events].join('\n')}\n`,
+  );
+}
+
 function writeCaptions() {
   const cues = [...project.subtitles].sort((a, b) => a.start - b.start);
 
@@ -58,6 +104,8 @@ function writeCaptions() {
     .map((c, i) => `${i + 1}\n${timecode(c.start, '.')} --> ${timecode(c.end, '.')}\n${c.text}\n`)]
     .join('\n');
   fs.writeFileSync(path.join(CAPTIONS, 'buzzys-senseational-adventure.en.vtt'), `${vtt}\n`);
+
+  writeAss(cues);
 
   return cues.length;
 }
@@ -231,7 +279,7 @@ main()
 console.log(`\n  Exports for "${project.meta.title}" (${fmt(project.meta.duration)})\n`);
 
 const cueCount = writeCaptions();
-console.log(`    captions      ${cueCount} cues -> .srt and .vtt`);
+console.log(`    captions      ${cueCount} cues -> .srt, .vtt and .ass`);
 const shotCount = writeShotList();
 console.log(`    shot list     ${shotCount} shots -> shot-list.csv`);
 const cues = writeCueSheet();
