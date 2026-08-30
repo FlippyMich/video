@@ -10,7 +10,8 @@
 
 import { useMemo, useRef, useState } from 'react';
 import { parseScript } from '../../engine/script/parser';
-import { buildProjectFromScript, autoCast, type CastMember } from '../../engine/script/builder';
+import { autoCast, type CastMember } from '../../engine/script/builder';
+import { buildInWorker } from '../../engine/workers/build-client';
 import { CHARACTERS } from '../../engine/assets/characters';
 import { store } from '../store';
 
@@ -41,6 +42,7 @@ export function ScriptPanel() {
   const [bookends, setBookends] = useState(true);
   const [wpm, setWpm] = useState(138);
   const [castOverrides, setCastOverrides] = useState<Record<string, string>>({});
+  const [building, setBuilding] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const parsed = useMemo(() => {
@@ -72,19 +74,28 @@ export function ScriptPanel() {
     return { scenes: s.scenes.length, lines, beats, cues, cast: s.cast.length, warnings: s.warnings };
   }, [parsed]);
 
-  const build = () => {
-    if (!parsed.ok) return;
+  const build = async () => {
+    if (!parsed.ok || building) return;
+    setBuilding(true);
     const overrides: CastMember[] = cast.map((c) => ({
       ...c,
       assetId: castOverrides[c.name] ?? c.assetId,
     }));
-    const project = buildProjectFromScript(parsed.script, {
-      cast: overrides,
-      bookends,
-      wpm,
-    });
-    project.scriptSource = text;
-    store.loadProject(project, `Built ${project.scenes.length} scenes and ${project.sequence.length} shots from your script.`);
+    try {
+      // Off the main thread: a full film is well over a hundred thousand
+      // keyframes, and baking that inline freezes the whole editor for long
+      // enough that people click the button twice.
+      const result = await buildInWorker(text, { cast: overrides, bookends, wpm });
+      store.loadProject(
+        result.project,
+        `Built ${result.stats.scenes} scenes and ${result.stats.shots} shots ` +
+        `(${result.stats.keyframes.toLocaleString()} keyframes) in ${(result.ms / 1000).toFixed(1)}s.`,
+      );
+    } catch (err) {
+      store.notify(`Could not build the film: ${(err as Error).message}`, 'warn');
+    } finally {
+      setBuilding(false);
+    }
   };
 
   return (
@@ -173,8 +184,8 @@ export function ScriptPanel() {
       </section>
 
       <div className="row sticky-actions">
-        <button className="btn primary big" disabled={!parsed.ok} onClick={build}>
-          Build the film
+        <button className="btn primary big" disabled={!parsed.ok || building} onClick={build}>
+          {building ? 'Building…' : 'Build the film'}
         </button>
         <button
           className="btn ghost"

@@ -16,6 +16,7 @@ import { ScriptPanel } from './panels/ScriptPanel';
 import { ExportPanel } from './panels/ExportPanel';
 import { LearnPanel } from './panels/LearnPanel';
 import { SceneList } from './panels/SceneList';
+import { CollabBar } from './panels/CollabBar';
 import { store, type PanelId } from './store';
 import { useEditor } from './useEditor';
 import { bakeAction, mergeTracks, type ActionId } from '../engine/anim/clips';
@@ -74,6 +75,7 @@ export function App() {
         </nav>
 
         <div className="topbar-actions">
+          <CollabBar />
           <button className="btn ghost small" onClick={() => store.undo()} title="Undo (Ctrl/⌘ Z)">Undo</button>
           <button className="btn ghost small" onClick={() => store.redo()} title="Redo (Ctrl/⌘ ⇧ Z)">Redo</button>
         </div>

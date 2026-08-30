@@ -142,6 +142,15 @@ export class SceneRuntime {
         break;
       }
       case 'prop': {
+        // Imports live in a session-scoped registry rather than in the project
+        // document: the document is deliberately free of binary payloads, and a
+        // 40MB model inlined into it would break saving, undo and sharing.
+        if (doc.assetId.startsWith('import.')) {
+          const registry = (globalThis as { bloomImports?: Map<string, THREE.Object3D> }).bloomImports;
+          const imported = registry?.get(doc.assetId);
+          if (imported) object.add(imported.clone(true));
+          break;
+        }
         const prop = buildProp(doc.assetId, (doc.params ?? {}) as never);
         if (prop) object.add(prop);
         break;

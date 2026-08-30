@@ -15,6 +15,9 @@ import { ACTIONS } from '../../engine/anim/clips';
 import { store, uid } from '../store';
 import { useEditor } from '../useEditor';
 import type { SceneNode } from '../../engine/types';
+import { IMPORT_NOTES, importModel, retargetClip } from '../../engine/assets/import';
+import { mergeTracks } from '../../engine/anim/clips';
+import { CHARACTER_BY_ID } from '../../engine/assets/characters';
 
 type Tab = 'characters' | 'props' | 'sets' | 'effects' | 'actions';
 
@@ -166,7 +169,136 @@ export function AssetLibrary() {
           {!items.length && <p className="empty">Nothing matches “{query}”.</p>}
         </div>
       )}
+
+      {(tab === 'props' || tab === 'characters') && <ImportSection sceneId={sceneId} nodeId={selectedNodeId} />}
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Bringing in outside assets
+ * ------------------------------------------------------------------ */
+
+function ImportSection({ sceneId, nodeId }: { sceneId: string; nodeId: string | null }) {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [notes, setNotes] = useState<string[]>([]);
+  const modelRef = useRef<HTMLInputElement>(null);
+  const animRef = useRef<HTMLInputElement>(null);
+
+  const loadModel = async (file: File) => {
+    setBusy(true);
+    setNotes([]);
+    try {
+      const imported = await importModel(await file.arrayBuffer(), { targetHeight: 1.2 });
+      // Imports are held in memory for the session rather than written into the
+      // project: the project document is deliberately free of binary payloads,
+      // and a 40MB model pasted into it would break saving, undo and sharing.
+      const registry = (window as unknown as { bloomImports?: Map<string, unknown> });
+      registry.bloomImports ??= new Map();
+      const id = `import.${file.name.replace(/\.[^.]+$/, '')}`;
+      registry.bloomImports.set(id, imported.object);
+      store.edit((project) => {
+        const target = project.scenes.find((s) => s.id === sceneId);
+        target?.nodes.push({
+          id: uid('import'),
+          name: file.name.replace(/\.[^.]+$/, ''),
+          kind: 'prop',
+          assetId: id,
+          position: [0, 0, 0], rotation: [0, 0, 0], scale: [1, 1, 1],
+        });
+      }, { rebuild: true });
+      setNotes([`Added “${file.name}”.`, ...imported.notes]);
+    } catch (err) {
+      setNotes([`Could not read that file: ${(err as Error).message}`]);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const loadAnimation = async (file: File) => {
+    if (!nodeId) { setNotes(['Select a character first — the animation has to go onto somebody.']); return; }
+    setBusy(true);
+    setNotes([]);
+    try {
+      const imported = await importModel(await file.arrayBuffer(), {});
+      if (!imported.animations.length) {
+        setNotes(['There is no animation in that file.']);
+        return;
+      }
+      const state = store.getState();
+      const node = state.project.scenes
+        .flatMap((s) => s.nodes).find((n) => n.id === nodeId);
+      const family = node ? CHARACTER_BY_ID.get(node.assetId)?.rigFamily ?? 'biped' : 'biped';
+      const result = retargetClip(imported.animations[0], family, { fps: state.project.meta.fps });
+      if (!result.tracks.length) {
+        setNotes(result.notes);
+        return;
+      }
+      const shift = state.time;
+      const shifted = result.tracks.map((t) => ({
+        channel: t.channel,
+        keys: t.keys.map((k) => ({ t: k.t + shift, v: k.v })),
+      }));
+      store.edit((project) => {
+        for (const scene of project.scenes) {
+          const target = scene.nodes.find((n) => n.id === nodeId);
+          if (!target) continue;
+          target.tracks = mergeTracks(target.tracks ?? [], shifted);
+          return;
+        }
+      });
+      setNotes([
+        `Retargeted “${imported.animations[0].name || file.name}” — ` +
+        `${result.duration.toFixed(1)}s onto ${result.tracks.length} channels.`,
+        ...result.notes,
+      ]);
+    } catch (err) {
+      setNotes([`Could not read that file: ${(err as Error).message}`]);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <section className="group">
+      <button className="faq-head" onClick={() => setOpen((v) => !v)}>
+        Bring in your own {open ? '−' : '+'}
+      </button>
+      {open && (
+        <div>
+          <p className="hint">
+            Models from asset libraries, and animation from Mixamo. glTF (.glb / .gltf) only —
+            export from Blender if you have something else.
+          </p>
+          <div className="row wrap">
+            <button className="btn small" disabled={busy} onClick={() => modelRef.current?.click()}>
+              {busy ? 'Reading…' : 'Add a model'}
+            </button>
+            <button className="btn small" disabled={busy || !nodeId} onClick={() => animRef.current?.click()}>
+              Add an animation
+            </button>
+          </div>
+          <input ref={modelRef} type="file" accept=".glb,.gltf" hidden
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) void loadModel(f); e.target.value = ''; }} />
+          <input ref={animRef} type="file" accept=".glb,.gltf" hidden
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) void loadAnimation(f); e.target.value = ''; }} />
+
+          {notes.length > 0 && (
+            <div className="warnings">
+              {notes.map((n, i) => <p key={i}>{n}</p>)}
+            </div>
+          )}
+
+          <h4>Worth knowing</h4>
+          <ul className="import-notes">
+            {[...IMPORT_NOTES.animation.slice(0, 2), ...IMPORT_NOTES.licensing].map((n, i) => (
+              <li key={i}>{n}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 }
 
