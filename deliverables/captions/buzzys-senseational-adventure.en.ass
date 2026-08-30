@@ -1,0 +1,114 @@
+[Script Info]
+ScriptType: v4.00+
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+PlayResX: 1920
+PlayResY: 1080
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Bloom,DejaVu Sans,54,&H00FFFFFF,&H00FFFFFF,&H00140F1A,&H00000000,-1,0,0,0,100,100,0,0,1,7,0,2,150,150,72,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:09.47,0:00:14.32,Bloom,,0,0,0,,Hello, hello, HELLO, my\Nfriends! It's me — Buzzy!
+Dialogue: 0,0:00:14.52,0:00:16.35,Bloom,,0,0,0,,Welcome back to the garden!
+Dialogue: 0,0:00:19.55,0:00:22.88,Bloom,,0,0,0,,Oh, I saw that! What a lovely wave.
+Dialogue: 0,0:00:23.08,0:00:27.99,Bloom,,0,0,0,,Here's a big question. How do you\Nknow what's happening around you?
+Dialogue: 0,0:00:32.21,0:00:37.20,Bloom,,0,0,0,,Lily! Just in time. How do\Nwe find out about the world?
+Dialogue: 0,0:00:37.40,0:00:40.99,Bloom,,0,0,0,,Ooh. With my eyes? I look at things.
+Dialogue: 0,0:00:41.19,0:00:45.60,Bloom,,0,0,0,,Yes! And that's called a\Nsense. Your sense of sight.
+Dialogue: 0,0:00:45.80,0:00:48.58,Bloom,,0,0,0,,A sense? Is there more than one?
+Dialogue: 0,0:00:48.78,0:00:52.58,Bloom,,0,0,0,,There are five! Five\Nsenses, Lily. And today,
+Dialogue: 0,0:00:52.60,0:00:55.74,Bloom,,0,0,0,,we're going to find every single one.
+Dialogue: 0,0:00:55.94,0:00:58.98,Bloom,,0,0,0,,Five! Let's go and find them!
+Dialogue: 0,0:01:02.18,0:01:07.91,Bloom,,0,0,0,,Five it is. Come on, everybody.\NLet's have a sense-ational adventure!
+Dialogue: 0,0:01:11.38,0:01:13.93,Bloom,,0,0,0,,Here we are! Sense number one.
+Dialogue: 0,0:01:14.13,0:01:18.25,Bloom,,0,0,0,,Everybody, put your\Nhands over your eyes. Go on!
+Dialogue: 0,0:01:21.45,0:01:23.44,Bloom,,0,0,0,,Can you see anything at all?
+Dialogue: 0,0:01:23.64,0:01:26.01,Bloom,,0,0,0,,Not a thing! It's all dark.
+Dialogue: 0,0:01:26.21,0:01:28.03,Bloom,,0,0,0,,Now — open them up!
+Dialogue: 0,0:01:29.25,0:01:31.60,Bloom,,0,0,0,,Ta-daaa! Look at all this!
+Dialogue: 0,0:01:31.80,0:01:33.50,Bloom,,0,0,0,,Wow. The colours!
+Dialogue: 0,0:01:33.70,0:01:39.03,Bloom,,0,0,0,,That's your sense of SIGHT. Your\Neyes let you see colours, and shapes,
+Dialogue: 0,0:01:39.05,0:01:40.81,Bloom,,0,0,0,,and how big things are.
+Dialogue: 0,0:01:41.01,0:01:45.09,Bloom,,0,0,0,,Let's practise. I'll say a\Ncolour, and you find it.
+Dialogue: 0,0:01:45.29,0:01:47.23,Bloom,,0,0,0,,Can you find something RED?
+Dialogue: 0,0:01:50.43,0:01:52.25,Bloom,,0,0,0,,I found a red tulip!
+Dialogue: 0,0:01:52.45,0:01:54.94,Bloom,,0,0,0,,Beautiful. Now something YELLOW.
+Dialogue: 0,0:01:58.14,0:02:00.38,Bloom,,0,0,0,,The middle of the daisy is yellow!
+Dialogue: 0,0:02:00.58,0:02:03.90,Bloom,,0,0,0,,Now here's the tricky\None. Something GREEN.
+Dialogue: 0,0:02:07.10,0:02:13.18,Bloom,,0,0,0,,That's easy. The grass, the\Nleaves, the stems — green, green, green!
+Dialogue: 0,0:02:13.38,0:02:18.27,Bloom,,0,0,0,,Brilliant looking, everybody.\NThat's sense number one: seeing.
+Dialogue: 0,0:02:24.74,0:02:26.36,Bloom,,0,0,0,,Tweet! Tweet-tweet!
+Dialogue: 0,0:02:26.56,0:02:28.65,Bloom,,0,0,0,,Oh! Did you hear that?
+Dialogue: 0,0:02:28.85,0:02:31.01,Bloom,,0,0,0,,I did! Who was that?
+Dialogue: 0,0:02:31.21,0:02:33.56,Bloom,,0,0,0,,It was me! Hello, I'm Pip.
+Dialogue: 0,0:02:33.76,0:02:36.55,Bloom,,0,0,0,,Everybody, this is sense number two.
+Dialogue: 0,0:02:36.75,0:02:40.90,Bloom,,0,0,0,,Close your eyes for me.\NNow — what can you hear?
+Dialogue: 0,0:02:44.30,0:02:46.21,Bloom,,0,0,0,,I can hear Pip singing!
+Dialogue: 0,0:02:46.41,0:02:48.93,Bloom,,0,0,0,,And the water going splish, splash.
+Dialogue: 0,0:02:49.13,0:02:52.56,Bloom,,0,0,0,,And the wind in the leaves. Shhhhhh.
+Dialogue: 0,0:02:52.76,0:02:58.59,Bloom,,0,0,0,,Open your eyes! That was your sense\Nof HEARING. Your ears did all of that,
+Dialogue: 0,0:02:58.61,0:03:00.03,Bloom,,0,0,0,,all by themselves.
+Dialogue: 0,0:03:00.23,0:03:04.85,Bloom,,0,0,0,,My ears were working the whole\Ntime and I didn't even know!
+Dialogue: 0,0:03:06.07,0:03:11.32,Bloom,,0,0,0,,Now, listen very carefully. Is\Nthis sound LOUD, or is it QUIET?
+Dialogue: 0,0:03:14.52,0:03:17.59,Bloom,,0,0,0,,Quiet! Well listened. And this one?
+Dialogue: 0,0:03:20.79,0:03:22.47,Bloom,,0,0,0,,That one made me jump!
+Dialogue: 0,0:03:22.67,0:03:26.51,Bloom,,0,0,0,,Let's make a sound\Ntogether! Can you clap your hands?
+Dialogue: 0,0:03:31.21,0:03:35.77,Bloom,,0,0,0,,What a wonderful noise.\NThat's sense number two: hearing.
+Dialogue: 0,0:03:43.14,0:03:47.51,Bloom,,0,0,0,,Mmmmm. Oh, my\Ngoodness. Come and smell this.
+Dialogue: 0,0:03:47.71,0:03:48.59,Bloom,,0,0,0,,What is it?
+Dialogue: 0,0:03:48.79,0:03:52.57,Bloom,,0,0,0,,It's the flower. Take a big\Nbreath in through your nose.
+Dialogue: 0,0:03:57.89,0:04:00.91,Bloom,,0,0,0,,Ohhh! It's sweet! Like honey!
+Dialogue: 0,0:04:01.11,0:04:05.83,Bloom,,0,0,0,,That's sense number three.\NSMELLING. Your nose is doing that.
+Dialogue: 0,0:04:06.03,0:04:10.30,Bloom,,0,0,0,,Some smells are lovely. And\Nsome are... not so lovely.
+Dialogue: 0,0:04:11.42,0:04:14.76,Bloom,,0,0,0,,Ugh! Has anybody been\Nnear the compost heap?
+Dialogue: 0,0:04:14.96,0:04:18.22,Bloom,,0,0,0,,Oh dear. Dotty found\Na not-so-lovely one.
+Dialogue: 0,0:04:21.62,0:04:24.79,Bloom,,0,0,0,,Mine is bread. Warm bread from the oven.
+Dialogue: 0,0:04:24.99,0:04:28.55,Bloom,,0,0,0,,And mine is flowers,\Nof course. I'm a bee!
+Dialogue: 0,0:04:28.75,0:04:32.71,Bloom,,0,0,0,,Three senses found.\NSeeing, hearing, and smelling.
+Dialogue: 0,0:04:38.28,0:04:41.20,Bloom,,0,0,0,,Now this one — this one is my favourite.
+Dialogue: 0,0:04:41.40,0:04:43.53,Bloom,,0,0,0,,What's in the basket, Buzzy?
+Dialogue: 0,0:04:44.75,0:04:45.75,Bloom,,0,0,0,,A strawberry!
+Dialogue: 0,0:04:45.95,0:04:49.04,Bloom,,0,0,0,,Take a little taste. Just a little one.
+Dialogue: 0,0:04:50.26,0:04:52.41,Bloom,,0,0,0,,Mmmm! It's SWEET!
+Dialogue: 0,0:04:52.61,0:04:58.84,Bloom,,0,0,0,,Sense number four. TASTING. Your\Ntongue knows sweet, and salty, and sour.
+Dialogue: 0,0:04:59.04,0:05:00.77,Bloom,,0,0,0,,Sour? What's sour?
+Dialogue: 0,0:05:00.97,0:05:04.00,Bloom,,0,0,0,,Oh, Dotty. You're going to find out.
+Dialogue: 0,0:05:05.12,0:05:07.48,Bloom,,0,0,0,,It's yellow. It looks lovely.
+Dialogue: 0,0:05:11.70,0:05:13.63,Bloom,,0,0,0,,Oooooooh! That's SOUR!
+Dialogue: 0,0:05:13.83,0:05:17.71,Bloom,,0,0,0,,And remember — we only\Ntaste things we know are safe.
+Dialogue: 0,0:05:17.91,0:05:20.16,Bloom,,0,0,0,,Always ask a grown-up first!
+Dialogue: 0,0:05:20.36,0:05:22.82,Bloom,,0,0,0,,Exactly right. That's four!
+Dialogue: 0,0:05:29.29,0:05:31.88,Bloom,,0,0,0,,One more to find. Just one!
+Dialogue: 0,0:05:32.08,0:05:34.55,Bloom,,0,0,0,,The last sense! What is it?
+Dialogue: 0,0:05:35.77,0:05:39.33,Bloom,,0,0,0,,Feel this moss. Go\Non, reach out with me.
+Dialogue: 0,0:05:42.73,0:05:45.64,Bloom,,0,0,0,,It's soft! Like a little cushion.
+Dialogue: 0,0:05:45.84,0:05:50.45,Bloom,,0,0,0,,That's sense number five.\NTOUCHING. And your skin does it.
+Dialogue: 0,0:05:51.57,0:05:54.30,Bloom,,0,0,0,,Ooh! This one isn't soft at all!
+Dialogue: 0,0:05:54.50,0:05:56.81,Bloom,,0,0,0,,What does it feel like, Dotty?
+Dialogue: 0,0:05:57.01,0:05:59.09,Bloom,,0,0,0,,Bumpy. And a bit prickly.
+Dialogue: 0,0:05:59.29,0:06:02.22,Bloom,,0,0,0,,Bumpy and prickly. Lovely describing.
+Dialogue: 0,0:06:03.44,0:06:06.39,Bloom,,0,0,0,,And this rock is smooth. And cold!
+Dialogue: 0,0:06:06.59,0:06:12.70,Bloom,,0,0,0,,Smooth. Cold. Rough. Warm.\NSoft. Your skin knows them all.
+Dialogue: 0,0:06:16.10,0:06:19.22,Bloom,,0,0,0,,Mine is fuzzy! I'm a bee, remember.
+Dialogue: 0,0:06:19.42,0:06:22.51,Bloom,,0,0,0,,And that's five! We found all five!
+Dialogue: 0,0:06:25.08,0:06:28.42,Bloom,,0,0,0,,We did it! Let's\Ncount them all together.
+Dialogue: 0,0:06:28.62,0:06:31.16,Bloom,,0,0,0,,Number one — my eyes can SEE.
+Dialogue: 0,0:06:34.36,0:06:36.97,Bloom,,0,0,0,,Number two — my ears can HEAR.
+Dialogue: 0,0:06:40.17,0:06:43.53,Bloom,,0,0,0,,My nose can SMELL, and\Nmy tongue can TASTE.
+Dialogue: 0,0:06:46.73,0:06:49.69,Bloom,,0,0,0,,And number five — my skin can TOUCH.
+Dialogue: 0,0:06:52.89,0:06:55.56,Bloom,,0,0,0,,Five senses! Let's sing it!
+Dialogue: 0,0:06:55.76,0:06:58.15,Bloom,,0,0,0,,Sing along with me, everybody!
+Dialogue: 0,0:07:02.85,0:07:05.27,Bloom,,0,0,0,,Eyes to see and ears to hear,
+Dialogue: 0,0:07:05.47,0:07:07.95,Bloom,,0,0,0,,A nose to smell the flowers near,
+Dialogue: 0,0:07:08.15,0:07:10.82,Bloom,,0,0,0,,A tongue to taste our lunch today,
+Dialogue: 0,0:07:11.02,0:07:13.34,Bloom,,0,0,0,,And skin to feel along the way!
+Dialogue: 0,0:07:13.54,0:07:17.87,Bloom,,0,0,0,,Five senses, five senses,\None two three four five!
+Dialogue: 0,0:07:18.07,0:07:22.63,Bloom,,0,0,0,,Five senses, five senses,\Nthey help us feel alive!
+Dialogue: 0,0:07:24.75,0:07:27.90,Bloom,,0,0,0,,So next time you're outside, have a go.
+Dialogue: 0,0:07:28.10,0:07:30.96,Bloom,,0,0,0,,What can you see? What can you hear?
+Dialogue: 0,0:07:31.16,0:07:34.10,Bloom,,0,0,0,,What can you smell,\Nand what can you touch?
+Dialogue: 0,0:07:34.30,0:07:37.72,Bloom,,0,0,0,,Thank you for coming on\Nour sense-ational adventure!
+Dialogue: 0,0:07:37.92,0:07:41.62,Bloom,,0,0,0,,I'll see you next\Ntime. Bye bye, friends!

@@ -30,11 +30,11 @@ for (const [w, h, q] of [[1920,1080,'best'], [1280,720,'good'], [960,540,'good']
 
 // Save sample frames at 1080p for a visual check.
 await page.evaluate(() => window.bloom.init({ width: 1920, height: 1080, quality: 'best', subtitles: true }));
-const out = path.join(ROOT, 'deliverables/_bench');
+const out = path.join(ROOT, 'pipeline/.cache/bench');
 fs.mkdirSync(out, { recursive: true });
 for (const t of [1.2, 3.0, 6.5, 8.0, 10.5, 13.0, 16.0]) {
   const data = await page.evaluate((tt) => window.bloom.renderFrame(tt, 'png'), t);
   fs.writeFileSync(path.join(out, `t${t}.png`), Buffer.from(data.split(',')[1], 'base64'));
 }
-console.log('frames written to deliverables/_bench');
+console.log('frames written to pipeline/.cache/bench');
 await studio.close();

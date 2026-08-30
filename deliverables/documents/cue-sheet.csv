@@ -1,0 +1,182 @@
+Start,Role,Duration,Source,Label
+00:00.00,music,5.50,audio/music/logo-sting.wav,Logo sting
+00:06.65,music,20.00,audio/music/gentle-morning.wav,gentle-morning
+00:09.47,sfx,1.00,audio/sfx/buzz-in.wav,buzz-in
+00:09.47,dialogue,4.85,audio/vo/001-buzzy.wav,"BUZZY: Hello, hello, HELLO, my friends! It's m…"
+00:14.52,dialogue,1.83,audio/vo/002-buzzy.wav,BUZZY: Welcome back to the garden!
+00:16.55,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+00:16.55,audience beat,3.00,question-pause,Can you wave hello to Buzzy?
+00:19.55,dialogue,3.33,audio/vo/003-buzzy.wav,"BUZZY: Oh, I saw that! What a lovely wave."
+00:23.08,dialogue,4.91,audio/vo/004-buzzy.wav,BUZZY: Here's a big question. How do you know …
+00:28.19,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+00:28.19,audience beat,3.00,question-pause,How do you find things out? Have a think!
+00:32.21,dialogue,4.99,audio/vo/005-buzzy.wav,BUZZY: Lily! Just in time. How do we find out …
+00:37.40,dialogue,3.59,audio/vo/006-lily.wav,LILY: Ooh. With my eyes? I look at things.
+00:41.19,dialogue,4.41,audio/vo/007-buzzy.wav,BUZZY: Yes! And that's called a sense. Your se…
+00:45.80,dialogue,2.78,audio/vo/008-lily.wav,LILY: A sense? Is there more than one?
+00:48.78,dialogue,6.95,audio/vo/009-buzzy.wav,"BUZZY: There are five! Five senses, Lily. And …"
+00:55.94,sfx,1.00,audio/sfx/sparkle.wav,sparkle
+00:55.94,dialogue,3.04,audio/vo/010-lily.wav,LILY: Five! Let's go and find them!
+00:59.18,sfx,2.00,audio/sfx/twinkle.wav,twinkle (count-along)
+00:59.18,audience beat,3.00,count-along,Count with me — how many senses are we looking for?
+01:02.18,dialogue,5.73,audio/vo/011-buzzy.wav,"BUZZY: Five it is. Come on, everybody. Let's h…"
+01:08.11,sfx,1.00,audio/sfx/whoosh.wav,whoosh
+01:09.46,music,20.00,audio/music/bright-discovery.wav,bright-discovery
+01:11.38,dialogue,2.55,audio/vo/012-buzzy.wav,BUZZY: Here we are! Sense number one.
+01:14.13,dialogue,4.12,audio/vo/013-buzzy.wav,"BUZZY: Everybody, put your hands over your eye…"
+01:18.45,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+01:18.45,audience beat,3.00,question-pause,Cover your eyes with your hands!
+01:21.45,dialogue,1.99,audio/vo/014-buzzy.wav,BUZZY: Can you see anything at all?
+01:23.64,dialogue,2.37,audio/vo/015-lily.wav,LILY: Not a thing! It's all dark.
+01:26.21,dialogue,1.82,audio/vo/016-buzzy.wav,BUZZY: Now — open them up!
+01:28.23,sfx,1.00,audio/sfx/twinkle.wav,twinkle
+01:29.25,dialogue,2.34,audio/vo/017-buzzy.wav,BUZZY: Ta-daaa! Look at all this!
+01:31.80,dialogue,1.71,audio/vo/018-lily.wav,LILY: Wow. The colours!
+01:33.70,dialogue,7.10,audio/vo/019-buzzy.wav,BUZZY: That's your sense of SIGHT. Your eyes l…
+01:41.01,dialogue,4.08,audio/vo/020-buzzy.wav,"BUZZY: Let's practise. I'll say a colour, and …"
+01:45.29,dialogue,1.95,audio/vo/021-buzzy.wav,BUZZY: Can you find something RED?
+01:47.43,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+01:47.43,audience beat,3.00,question-pause,Point at something red!
+01:50.43,dialogue,1.82,audio/vo/022-lily.wav,LILY: I found a red tulip!
+01:52.45,dialogue,2.49,audio/vo/023-buzzy.wav,BUZZY: Beautiful. Now something YELLOW.
+01:55.14,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+01:55.14,audience beat,3.00,question-pause,Point at something yellow!
+01:58.14,dialogue,2.24,audio/vo/024-lily.wav,LILY: The middle of the daisy is yellow!
+02:00.58,dialogue,3.32,audio/vo/025-buzzy.wav,BUZZY: Now here's the tricky one. Something GR…
+02:04.10,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+02:04.10,audience beat,3.00,question-pause,Where is something green?
+02:07.10,dialogue,6.08,audio/vo/026-lily.wav,"LILY: That's easy. The grass, the leaves, the…"
+02:13.38,dialogue,4.89,audio/vo/027-buzzy.wav,"BUZZY: Brilliant looking, everybody. That's se…"
+02:18.47,sfx,1.00,audio/sfx/ding.wav,ding
+02:18.47,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+02:18.47,audience beat,3.00,question-pause,Hold up one finger. One sense found!
+02:22.82,music,20.00,audio/music/playful-curious.wav,playful-curious
+02:24.74,sfx,1.00,audio/sfx/water-lap.wav,water-lap
+02:24.74,dialogue,1.63,audio/vo/028-pip.wav,PIP: Tweet! Tweet-tweet!
+02:26.56,dialogue,2.09,audio/vo/029-buzzy.wav,BUZZY: Oh! Did you hear that?
+02:28.85,dialogue,2.16,audio/vo/030-lily.wav,LILY: I did! Who was that?
+02:31.21,dialogue,2.35,audio/vo/031-pip.wav,"PIP: It was me! Hello, I'm Pip."
+02:33.76,dialogue,2.79,audio/vo/032-buzzy.wav,"BUZZY: Everybody, this is sense number two."
+02:36.75,dialogue,4.15,audio/vo/033-buzzy.wav,BUZZY: Close your eyes for me. Now — what can …
+02:41.10,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+02:41.10,audience beat,3.20,question-pause,Close your eyes and listen!
+02:44.30,sfx,1.00,audio/sfx/bird-song.wav,bird-song
+02:44.30,dialogue,1.91,audio/vo/034-lily.wav,LILY: I can hear Pip singing!
+02:46.41,dialogue,2.51,audio/vo/035-buzzy.wav,"BUZZY: And the water going splish, splash."
+02:49.13,dialogue,3.43,audio/vo/036-pip.wav,PIP: And the wind in the leaves. Shhhhhh.
+02:52.76,dialogue,7.27,audio/vo/037-buzzy.wav,BUZZY: Open your eyes! That was your sense of …
+03:00.23,dialogue,4.62,audio/vo/038-lily.wav,LILY: My ears were working the whole time and…
+03:05.05,sfx,1.00,audio/sfx/bell.wav,bell
+03:06.07,dialogue,5.25,audio/vo/039-buzzy.wav,"BUZZY: Now, listen very carefully. Is this sou…"
+03:11.52,sfx,1.00,audio/sfx/bell-soft.wav,bell-soft
+03:11.52,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+03:11.52,audience beat,3.00,question-pause,Loud or quiet?
+03:14.52,dialogue,3.07,audio/vo/040-buzzy.wav,BUZZY: Quiet! Well listened. And this one?
+03:17.79,sfx,1.00,audio/sfx/drum-loud.wav,drum-loud
+03:17.79,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+03:17.79,audience beat,3.00,question-pause,Loud or quiet?
+03:20.79,dialogue,1.68,audio/vo/041-lily.wav,LILY: That one made me jump!
+03:22.67,dialogue,3.84,audio/vo/042-pip.wav,PIP: Let's make a sound together! Can you cl…
+03:26.71,sfx,2.00,audio/sfx/twinkle.wav,twinkle (copy-the-gesture)
+03:26.71,audience beat,4.50,copy-the-gesture,Clap along with us!
+03:31.21,sfx,1.00,audio/sfx/clapping.wav,clapping
+03:31.21,dialogue,4.56,audio/vo/043-buzzy.wav,BUZZY: What a wonderful noise. That's sense nu…
+03:35.97,sfx,1.00,audio/sfx/ding.wav,ding
+03:35.97,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+03:35.97,audience beat,3.00,question-pause,Hold up two fingers. Two senses!
+03:40.32,music,20.00,audio/music/gentle-wonder.wav,gentle-wonder
+03:43.14,sfx,1.00,audio/sfx/sniff.wav,sniff
+03:43.14,dialogue,4.37,audio/vo/044-buzzy.wav,"BUZZY: Mmmmm. Oh, my goodness. Come and smell …"
+03:47.71,dialogue,0.88,audio/vo/045-lily.wav,LILY: What is it?
+03:48.79,dialogue,3.78,audio/vo/046-buzzy.wav,BUZZY: It's the flower. Take a big breath in t…
+03:52.77,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+03:52.77,audience beat,3.20,question-pause,Take a deep breath in through your nose!
+03:57.89,dialogue,3.01,audio/vo/047-lily.wav,LILY: Ohhh! It's sweet! Like honey!
+04:01.11,dialogue,4.73,audio/vo/048-buzzy.wav,BUZZY: That's sense number three. SMELLING. Yo…
+04:06.03,dialogue,4.26,audio/vo/049-buzzy.wav,BUZZY: Some smells are lovely. And some are...…
+04:11.42,dialogue,3.34,audio/vo/050-dotty.wav,DOTTY: Ugh! Has anybody been near the compost …
+04:14.96,dialogue,3.26,audio/vo/051-buzzy.wav,BUZZY: Oh dear. Dotty found a not-so-lovely on…
+04:18.42,sfx,1.00,audio/sfx/comedy-pop.wav,comedy-pop
+04:18.42,sfx,2.00,audio/sfx/twinkle.wav,twinkle (shout-it-out)
+04:18.42,audience beat,3.20,shout-it-out,What's your favourite smell? Tell me!
+04:21.62,dialogue,3.17,audio/vo/052-lily.wav,LILY: Mine is bread. Warm bread from the oven.
+04:24.99,dialogue,3.55,audio/vo/053-buzzy.wav,"BUZZY: And mine is flowers, of course. I'm a b…"
+04:28.75,dialogue,3.96,audio/vo/054-buzzy.wav,"BUZZY: Three senses found. Seeing, hearing, an…"
+04:32.91,sfx,1.00,audio/sfx/ding.wav,ding
+04:32.91,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+04:32.91,audience beat,3.00,question-pause,Hold up three fingers!
+04:37.26,music,20.00,audio/music/cheeky-fun.wav,cheeky-fun
+04:38.28,dialogue,2.92,audio/vo/055-buzzy.wav,BUZZY: Now this one — this one is my favourite.
+04:41.40,dialogue,2.13,audio/vo/056-lily.wav,"LILY: What's in the basket, Buzzy?"
+04:44.75,dialogue,1.01,audio/vo/057-lily.wav,LILY: A strawberry!
+04:45.95,dialogue,3.08,audio/vo/058-buzzy.wav,BUZZY: Take a little taste. Just a little one.
+04:50.26,sfx,1.00,audio/sfx/nibble.wav,nibble
+04:50.26,dialogue,2.16,audio/vo/059-lily.wav,LILY: Mmmm! It's SWEET!
+04:52.61,dialogue,6.23,audio/vo/060-buzzy.wav,BUZZY: Sense number four. TASTING. Your tongue…
+04:59.04,dialogue,1.73,audio/vo/061-dotty.wav,DOTTY: Sour? What's sour?
+05:00.97,dialogue,3.03,audio/vo/062-buzzy.wav,"BUZZY: Oh, Dotty. You're going to find out."
+05:05.12,dialogue,2.36,audio/vo/063-dotty.wav,DOTTY: It's yellow. It looks lovely.
+05:07.68,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+05:07.68,audience beat,3.00,question-pause,Do you think a lemon is sweet or sour?
+05:11.70,sfx,1.00,audio/sfx/comedy-boing.wav,comedy-boing
+05:11.70,dialogue,1.93,audio/vo/064-dotty.wav,DOTTY: Oooooooh! That's SOUR!
+05:13.83,dialogue,3.88,audio/vo/065-buzzy.wav,BUZZY: And remember — we only taste things we …
+05:17.91,dialogue,2.25,audio/vo/066-lily.wav,LILY: Always ask a grown-up first!
+05:20.36,dialogue,2.46,audio/vo/067-buzzy.wav,BUZZY: Exactly right. That's four!
+05:23.02,sfx,1.00,audio/sfx/ding.wav,ding
+05:23.02,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+05:23.02,audience beat,3.00,question-pause,Hold up four fingers!
+05:27.37,music,20.00,audio/music/soft-explore.wav,soft-explore
+05:29.29,dialogue,2.58,audio/vo/068-buzzy.wav,BUZZY: One more to find. Just one!
+05:32.08,dialogue,2.47,audio/vo/069-lily.wav,LILY: The last sense! What is it?
+05:35.77,dialogue,3.56,audio/vo/070-buzzy.wav,"BUZZY: Feel this moss. Go on, reach out with m…"
+05:39.53,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+05:39.53,audience beat,3.20,question-pause,Reach out your hand and touch something soft!
+05:42.73,dialogue,2.90,audio/vo/071-lily.wav,LILY: It's soft! Like a little cushion.
+05:45.84,dialogue,4.61,audio/vo/072-buzzy.wav,BUZZY: That's sense number five. TOUCHING. And…
+05:51.57,dialogue,2.73,audio/vo/073-dotty.wav,DOTTY: Ooh! This one isn't soft at all!
+05:54.50,dialogue,2.31,audio/vo/074-buzzy.wav,"BUZZY: What does it feel like, Dotty?"
+05:57.01,dialogue,2.09,audio/vo/075-dotty.wav,DOTTY: Bumpy. And a bit prickly.
+05:59.29,dialogue,2.92,audio/vo/076-buzzy.wav,BUZZY: Bumpy and prickly. Lovely describing.
+06:03.44,dialogue,2.95,audio/vo/077-lily.wav,LILY: And this rock is smooth. And cold!
+06:06.59,dialogue,6.11,audio/vo/078-buzzy.wav,BUZZY: Smooth. Cold. Rough. Warm. Soft. Your s…
+06:12.90,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+06:12.90,audience beat,3.20,question-pause,Can you feel your own cheek? Is it soft?
+06:16.10,dialogue,3.12,audio/vo/079-buzzy.wav,"BUZZY: Mine is fuzzy! I'm a bee, remember."
+06:19.42,dialogue,3.09,audio/vo/080-buzzy.wav,BUZZY: And that's five! We found all five!
+06:22.71,sfx,1.00,audio/sfx/fanfare.wav,fanfare
+06:24.06,music,20.00,audio/music/sing-along.wav,sing-along
+06:25.08,dialogue,3.34,audio/vo/081-buzzy.wav,BUZZY: We did it! Let's count them all togethe…
+06:28.62,dialogue,2.53,audio/vo/082-buzzy.wav,BUZZY: Number one — my eyes can SEE.
+06:31.36,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+06:31.36,audience beat,3.00,question-pause,Point to your eyes!
+06:34.36,dialogue,2.61,audio/vo/083-buzzy.wav,BUZZY: Number two — my ears can HEAR.
+06:37.17,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+06:37.17,audience beat,3.00,question-pause,Point to your ears!
+06:40.17,dialogue,3.35,audio/vo/084-buzzy.wav,"BUZZY: My nose can SMELL, and my tongue can TA…"
+06:43.73,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+06:43.73,audience beat,3.00,question-pause,"Point to your nose, then your tongue!"
+06:46.73,dialogue,2.96,audio/vo/085-buzzy.wav,BUZZY: And number five — my skin can TOUCH.
+06:49.89,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+06:49.89,audience beat,3.00,question-pause,Wiggle your fingers!
+06:52.89,dialogue,2.67,audio/vo/086-lily.wav,LILY: Five senses! Let's sing it!
+06:55.76,sfx,1.00,audio/sfx/music-start.wav,music-start
+06:55.76,dialogue,2.38,audio/vo/087-buzzy.wav,"BUZZY: Sing along with me, everybody!"
+06:58.35,sfx,2.00,audio/sfx/twinkle.wav,twinkle (sing-along)
+06:58.35,audience beat,4.50,sing-along,Sing along! Eyes to see and ears to hear!
+07:02.85,dialogue,2.42,audio/vo/088-buzzy.wav,"BUZZY: Eyes to see and ears to hear,"
+07:05.47,dialogue,2.47,audio/vo/089-buzzy.wav,"BUZZY: A nose to smell the flowers near,"
+07:08.15,dialogue,2.67,audio/vo/090-lily.wav,"LILY: A tongue to taste our lunch today,"
+07:11.02,dialogue,2.32,audio/vo/091-dotty.wav,DOTTY: And skin to feel along the way!
+07:13.54,dialogue,4.33,audio/vo/092-buzzy.wav,"BUZZY: Five senses, five senses, one two three…"
+07:18.07,dialogue,4.56,audio/vo/093-lily.wav,"LILY: Five senses, five senses, they help us …"
+07:22.83,sfx,1.00,audio/sfx/cheer.wav,cheer
+07:24.75,dialogue,3.15,audio/vo/094-buzzy.wav,"BUZZY: So next time you're outside, have a go."
+07:28.10,dialogue,2.85,audio/vo/095-buzzy.wav,BUZZY: What can you see? What can you hear?
+07:31.16,dialogue,2.94,audio/vo/096-buzzy.wav,"BUZZY: What can you smell, and what can you to…"
+07:34.30,dialogue,3.42,audio/vo/097-buzzy.wav,BUZZY: Thank you for coming on our sense-ation…
+07:37.92,dialogue,3.70,audio/vo/098-buzzy.wav,"BUZZY: I'll see you next time. Bye bye, friend…"
+07:41.82,sfx,2.00,audio/sfx/think-cue.wav,think-cue (question-pause)
+07:41.82,audience beat,3.00,question-pause,Wave goodbye to Buzzy!
+07:44.82,sfx,1.00,audio/sfx/sparkle.wav,sparkle
+07:45.02,music,7.00,audio/music/outro.wav,Outro music

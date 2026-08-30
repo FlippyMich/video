@@ -1,6 +1,34 @@
 node_modules/
 dist/
-deliverables/
 .DS_Store
 *.log
 pipeline/.cache/
+
+# The deliverables are build output — `bash pipeline/run-all.sh` reproduces all
+# of it from the script. What is un-ignored below is what is worth carrying in
+# the repository anyway: the finished files, and the ones you would need a
+# machine with ffmpeg, espeak-ng and scipy to regenerate.
+#
+# Left out on purpose: the uncompressed .wav stems and the per-cue source
+# libraries (about 700 MB between them), and the per-line voice recordings.
+# Stages 4 and 5 rebuild those in under a minute.
+deliverables/*
+!deliverables/README.md
+!deliverables/captions/
+!deliverables/documents/
+!deliverables/blender/
+
+!deliverables/audio/
+deliverables/audio/*
+!deliverables/audio/*.m4a
+!deliverables/audio/audio-manifest.json
+!deliverables/audio/voice-timings.json
+
+!deliverables/video/
+deliverables/video/*
+!deliverables/video/*.mp4
+!deliverables/video/*.jpg
+deliverables/video/intermediate/
+# The silent picture renders, before the mix is muxed on. Stage 8 retires them
+# into intermediate/, but they are large and never the deliverable.
+deliverables/video/*-mute.mp4

@@ -208,7 +208,7 @@ Produced by the pipeline into `deliverables/`:
 ```
 video/      the master, and a green-screen version
 audio/      voiceover / music / sfx stems, the full mix, and every source cue
-captions/   .srt and .vtt
+captions/   .srt, .vtt and a styled .ass for burn-in
 blender/    one .glb per scene with baked animation and camera, plus an importer
 documents/  the timestamped script (.docx), shot list and cue sheet (.csv)
 ```

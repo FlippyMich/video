@@ -1,0 +1,37 @@
+{
+ "music": {
+  "gentle-morning": 20.0,
+  "bright-discovery": 16.552,
+  "playful-curious": 17.778,
+  "gentle-wonder": 20.87,
+  "cheeky-fun": 15.238,
+  "soft-explore": 21.818,
+  "sing-along": 16.0,
+  "happy": 17.143,
+  "logo-sting": 5.5,
+  "outro": 12.231
+ },
+ "sfx": {
+  "buzz-in": 1.1,
+  "sparkle": 1.4,
+  "twinkle": 1.2,
+  "ding": 1.3,
+  "whoosh": 0.75,
+  "bell": 2.2,
+  "bell-soft": 1.8,
+  "drum-loud": 1.4,
+  "water-lap": 3.0,
+  "bird-song": 2.6,
+  "clapping": 3.2,
+  "sniff": 1.0,
+  "comedy-pop": 0.5,
+  "comedy-boing": 1.1,
+  "nibble": 0.7,
+  "fanfare": 2.4,
+  "cheer": 2.6,
+  "think-cue": 1.8,
+  "music-start": 1.2,
+  "giggle": 1.3,
+  "pop": 0.5
+ }
+}
