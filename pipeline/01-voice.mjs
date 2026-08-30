@@ -22,6 +22,14 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { openStudio, ROOT, bar } from './lib/studio.mjs';
 
+/**
+ * `--measure-only` skips synthesis and reads whatever is already in
+ * `deliverables/audio/vo/`. That is how you swap in real recordings: drop them
+ * in under the existing filenames, run this, and the rest of the pipeline
+ * retimes the film around the performances.
+ */
+const MEASURE_ONLY = process.argv.includes('--measure-only');
+
 const OUT = path.join(ROOT, 'deliverables/audio/vo');
 const SCRIPT = path.join(ROOT, 'content/buzzys-senseational-adventure.script.txt');
 
@@ -202,10 +210,12 @@ function buildPhonemeTimings(wordPhonemes, region) {
  * ------------------------------------------------------------------ */
 
 const source = fs.readFileSync(SCRIPT, 'utf8');
-// Start from an empty folder. Line numbering shifts whenever the script is
-// edited, so leftover takes from a previous version would linger in the
-// deliverable looking exactly like current ones.
-fs.rmSync(OUT, { recursive: true, force: true });
+if (!MEASURE_ONLY) {
+  // Start from an empty folder. Line numbering shifts whenever the script is
+  // edited, so leftover takes from a previous version would linger in the
+  // deliverable looking exactly like current ones.
+  fs.rmSync(OUT, { recursive: true, force: true });
+}
 fs.mkdirSync(OUT, { recursive: true });
 
 const studio = await openStudio();
@@ -222,6 +232,8 @@ const timings = {};
 let totalSpeech = 0;
 const perSpeaker = {};
 
+const missing = [];
+
 lines.forEach((line, i) => {
   const v = VOICES[line.speaker] ?? VOICES.DEFAULT;
   const file = path.join(OUT, `${String(i + 1).padStart(3, '0')}-${line.speaker.toLowerCase()}.wav`);
@@ -230,7 +242,12 @@ lines.forEach((line, i) => {
   // ("HELLO") would otherwise be spelled out letter by letter.
   const spoken = line.text.replace(/\b[A-Z]{2,}\b/g, (w) => w[0] + w.slice(1).toLowerCase());
 
-  execFileSync('espeak-ng', [
+  if (MEASURE_ONLY) {
+    if (!fs.existsSync(file)) {
+      missing.push(path.basename(file));
+      return;
+    }
+  } else execFileSync('espeak-ng', [
     '-v', v.voice,
     '-s', String(v.speed),
     '-p', String(v.pitch),
@@ -279,6 +296,12 @@ lines.forEach((line, i) => {
 });
 
 console.log('\n');
+if (missing.length) {
+  console.log(`  ${missing.length} recordings are missing and were skipped:`);
+  for (const f of missing.slice(0, 8)) console.log(`    ${f}`);
+  if (missing.length > 8) console.log(`    …and ${missing.length - 8} more`);
+  console.log('  Those lines will fall back to an estimated length.\n');
+}
 const manifest = path.join(ROOT, 'deliverables/audio/voice-timings.json');
 fs.writeFileSync(manifest, JSON.stringify(timings, null, 1));
 
@@ -286,5 +309,7 @@ console.log(`  total dialogue: ${totalSpeech.toFixed(1)}s (${(totalSpeech / 60).
 for (const [who, secs] of Object.entries(perSpeaker).sort((a, b) => b[1] - a[1])) {
   console.log(`    ${who.padEnd(8)} ${secs.toFixed(1)}s`);
 }
-console.log(`\n  wrote ${lines.length} files to deliverables/audio/vo/`);
+console.log(MEASURE_ONLY
+  ? `\n  measured ${lines.length - missing.length} existing recordings in deliverables/audio/vo/`
+  : `\n  wrote ${lines.length} files to deliverables/audio/vo/`);
 console.log(`  wrote ${path.relative(ROOT, manifest)}`);
