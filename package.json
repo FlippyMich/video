@@ -9,7 +9,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --port 4173",
     "typecheck": "tsc --noEmit",
-    "produce": "bash pipeline/run-all.sh"
+    "produce": "bash pipeline/run-all.sh",
+    "collab": "node server/collab.mjs"
   },
   "dependencies": {
     "mp4-muxer": "5.1.5",

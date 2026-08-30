@@ -125,6 +125,40 @@ synthesiser in `pipeline/lib/synth.py` and are yours to use.
 
 ---
 
+## Working with other people
+
+```bash
+node server/collab.mjs          # ws://localhost:8787
+```
+
+Then **Collaborate** in the top bar: enter the server, pick a room name, and
+share it. The first person in brings the film; everyone who joins receives it.
+Edits are shared as they happen, and you can see who else is there.
+
+It resolves conflicts at entity level — a scene, a shot — with last-writer-wins.
+If two people change the *same* scene at the same moment, the later change wins
+and the earlier one is lost. It is not a CRDT, the interface says so, and in
+practice dividing the work by scene avoids it entirely.
+
+The relay stores nothing. Rooms exist while somebody is in them.
+
+## Bringing in outside assets
+
+**Library → Characters or Props → Bring in your own.**
+
+- **Models** — glTF (`.glb` / `.gltf`) from TurboSquid, Sketchfab, Poly Haven,
+  Kenney and so on. Scaled to a sensible height and stood on the ground on
+  import. They keep their own materials, so they will not match the house toon
+  style — usually fine on a background prop, obvious on anything in the
+  foreground.
+- **Animation** — Mixamo, Rigify or VRM skeletons. Retargeting takes rotations
+  only: a Mixamo character is roughly seven heads tall and these are two to four,
+  and copying joint *positions* onto that would dislocate every limb. Retargeted
+  motion lands on the normal timeline, so you can layer a wave on top of an
+  imported walk.
+
+Anything you import stays under its own licence.
+
 ## How the engine is put together
 
 ```
@@ -133,9 +167,11 @@ src/engine/
   rig/                seven rig families, a ten-shape viseme set, twelve expressions
   anim/               keyframe evaluation and 36 procedural action clips
   assets/             characters, props, environments, materials, 3D text
-  fx/                 deterministic particle systems
+  fx/                 deterministic particle systems, cloth, rope and rigid bodies
   script/             the script parser and the auto-animator
   render/             the virtual director, the player, exporters
+  collab/             the real-time session
+  workers/            script building, off the main thread
   scene-builder.ts    turns a scene document into a live three.js scene
 ```
 
@@ -157,6 +193,11 @@ JSON file you can email.
 **Sets are seeded, not built.** A garden is generated from a theme and a number.
 The same seed always gives the same garden, which is what makes "shuffle until
 you like it" a safe button to press.
+
+**Even the physics is deterministic.** Cloth and bouncing bodies use Verlet
+integration run from `t = 0` at a fixed step, and a backwards seek re-simulates
+rather than reversing. A solver that accumulated state would break scrubbing and
+make every export subtly different from the last.
 
 ---
 
