@@ -30,6 +30,16 @@ for (const d of [CAPTIONS, SCENES, DOCS]) fs.mkdirSync(d, { recursive: true });
 
 const pad = (n, w = 2) => String(Math.floor(n)).padStart(w, '0');
 
+/**
+ * MM:SS.hh, for the spreadsheets.
+ *
+ * Deliberately not the SRT stamp with its first three characters cut off: the
+ * comma in `00:00:05,500` is part of the subtitle format, and reading it as a
+ * decimal separator in an English cue sheet is wrong twice over — it forces
+ * every cell to be quoted, and it makes a spreadsheet guess at the locale.
+ */
+const csvTime = (t) => `${pad(t / 60)}:${(t % 60).toFixed(2).padStart(5, '0')}`;
+
 function timecode(t, sep = ',') {
   const h = Math.floor(t / 3600);
   const m = Math.floor((t % 3600) / 60);
@@ -120,7 +130,7 @@ function writeShotList() {
   project.sequence.forEach((shot, i) => {
     rows.push([
       String(i + 1),
-      timecode(shot.start).slice(3, 11),
+      csvTime(shot.start),
       shot.duration.toFixed(2),
       sceneName.get(shot.sceneId) ?? shot.sceneId,
       shot.framing ?? 'camera',
@@ -135,20 +145,27 @@ function writeShotList() {
 }
 
 function writeCueSheet() {
-  const rows = [['Start', 'Role', 'Duration', 'Source', 'Label']];
-  for (const clip of [...project.audio].sort((a, b) => a.start - b.start)) {
-    rows.push([
-      timecode(clip.start).slice(3, 11),
-      clip.role,
-      clip.duration.toFixed(2),
-      clip.src,
-      (clip.label ?? '').replace(/[\r\n]+/g, ' ').slice(0, 70),
-    ]);
-  }
-  for (const beat of project.interactions) {
-    rows.push([timecode(beat.start).slice(3, 11), 'audience beat', beat.duration.toFixed(2), beat.kind, beat.prompt]);
-  }
-  rows.splice(1, 0, ...[]);
+  // Audience beats are cues too, and a cue sheet somebody reads down while
+  // watching is only useful in the order things actually happen — so the two
+  // kinds are sorted together rather than listed one after the other.
+  const cues = [
+    ...project.audio.map((clip) => ({
+      start: clip.start,
+      row: [
+        csvTime(clip.start),
+        clip.role,
+        clip.duration.toFixed(2),
+        clip.src,
+        (clip.label ?? '').replace(/[\r\n]+/g, ' ').slice(0, 70),
+      ],
+    })),
+    ...project.interactions.map((beat) => ({
+      start: beat.start,
+      row: [csvTime(beat.start), 'audience beat', beat.duration.toFixed(2), beat.kind, beat.prompt],
+    })),
+  ].sort((a, b) => a.start - b.start);
+
+  const rows = [['Start', 'Role', 'Duration', 'Source', 'Label'], ...cues.map((c) => c.row)];
   const csv = rows.map((r) => r.map((c) => (/[",]/.test(c) ? `"${c.replace(/"/g, '""')}"` : c)).join(',')).join('\n');
   fs.writeFileSync(path.join(DOCS, 'cue-sheet.csv'), `${csv}\n`);
   return rows.length - 1;
