@@ -243,7 +243,17 @@ function easeInOut(t: number): number {
   return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 }
 
-/** Which shot is on screen at time `t`. Sequence must be sorted by start. */
+/**
+ * Which shot is on screen at time `t`. Sequence must be sorted by start.
+ *
+ * When no shot covers `t` we hold the last shot that had started, rather than
+ * cutting anywhere else. Shot durations come from measured speech, so rounding
+ * them to whole frames leaves the occasional one- to six-frame hole between a
+ * shot ending and the next one starting — and this function used to answer
+ * those holes with `sequence[0]`, putting a flash of the title card into the
+ * middle of the film. Holding the outgoing shot makes a gap invisible, which
+ * is also what it should look like: a beat of silence on the same picture.
+ */
 export function shotAt(sequence: Shot[], t: number): { shot: Shot; index: number; u: number } | null {
   for (let i = 0; i < sequence.length; i++) {
     const s = sequence[i];
@@ -251,10 +261,14 @@ export function shotAt(sequence: Shot[], t: number): { shot: Shot; index: number
       return { shot: s, index: i, u: s.duration > 0 ? (t - s.start) / s.duration : 0 };
     }
   }
-  const last = sequence[sequence.length - 1];
-  if (last && t >= last.start + last.duration) {
-    return { shot: last, index: sequence.length - 1, u: 1 };
+  // A gap, or past the end of the film. Both mean: stay where we were.
+  let held = -1;
+  for (let i = 0; i < sequence.length; i++) {
+    if (sequence[i].start <= t && (held < 0 || sequence[i].start >= sequence[held].start)) held = i;
   }
+  if (held >= 0) return { shot: sequence[held], index: held, u: 1 };
+  // Before the first shot starts — only reachable if the sequence does not
+  // begin at zero.
   return sequence.length ? { shot: sequence[0], index: 0, u: 0 } : null;
 }
 
