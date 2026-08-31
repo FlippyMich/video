@@ -13,7 +13,12 @@ re-running the pipeline reproduces all of it.
 | `buzzys-senseational-adventure-1080p.mp4` | **The master.** 1920×1080, 16:9, 30fps, H.264 + AAC. Captions are *not* burned in — upload the `.srt` alongside it so viewers can turn them on and YouTube can translate them. |
 | `buzzys-senseational-adventure-1080p-captions.mp4` | The same film with captions burned into the picture. For places that cannot carry a subtitle track. |
 | `buzzys-senseational-adventure-1080p-greenscreen.mp4` | Characters and animation on flat chroma green (`#00B140`), with flat shadowless lighting. Same cut, same sound. |
+| `buzzys-senseational-adventure-1080p-upload.mp4` | The same film at a lower bitrate. Visually the same after YouTube's own re-encode, and small enough to send to somebody or keep in the repository. |
 | `buzzys-senseational-adventure-thumbnail.jpg` | A poster frame. |
+
+Only the upload cut and the thumbnail are committed. The masters are 340–360 MB
+each, past GitHub's 100 MB limit per file; `node pipeline/03-render.mjs`
+reproduces them.
 
 **Uploading to YouTube:** use the master, add the `.srt` from `captions/` as an
 English subtitle track, and set the thumbnail. The file is already

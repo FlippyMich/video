@@ -24,11 +24,14 @@ deliverables/audio/*
 !deliverables/audio/audio-manifest.json
 !deliverables/audio/voice-timings.json
 
+# Only what git can actually carry. The 1080p masters are 340-360 MB each —
+# past GitHub's 100 MB hard limit per file, so committing one would make the
+# repository permanently unpushable, not merely large. They live on disk and
+# `node pipeline/03-render.mjs` reproduces them.
+#
+# The upload cut is the same film at a bitrate YouTube will re-encode anyway,
+# small enough to carry and to hand somebody directly.
 !deliverables/video/
 deliverables/video/*
-!deliverables/video/*.mp4
-!deliverables/video/*.jpg
-deliverables/video/intermediate/
-# The silent picture renders, before the mix is muxed on. Stage 8 retires them
-# into intermediate/, but they are large and never the deliverable.
-deliverables/video/*-mute.mp4
+!deliverables/video/*-upload.mp4
+!deliverables/video/*-thumbnail.jpg
