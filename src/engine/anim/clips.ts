@@ -90,7 +90,7 @@ export const ACTIONS: ActionMeta[] = [
   { id: 'touch-reach', label: 'Reach & touch', naturalDuration: 1.5, loops: false, category: 'gesture', hint: 'Reaches out carefully with one hand.' },
   { id: 'hover', label: 'Hover', naturalDuration: 1.2, loops: true, families: ['winged-bug', 'bird'], category: 'flight', hint: 'Holds in the air, wings blurring.' },
   { id: 'fly-forward', label: 'Fly forward', naturalDuration: 1.0, loops: true, families: ['winged-bug', 'bird'], category: 'flight', hint: 'Leans into the direction of travel.' },
-  { id: 'flap', label: 'Flap', naturalDuration: 0.16, loops: true, families: ['winged-bug', 'bird'], category: 'flight', hint: 'Fast wingbeat. Layer under hover or fly.' },
+  { id: 'flap', label: 'Flap', naturalDuration: 0.5, loops: true, families: ['winged-bug', 'bird'], category: 'flight', hint: 'Wings alive. A quiver for insects, a real beat for birds — both slow enough to read at 30fps.' },
   { id: 'land', label: 'Land', naturalDuration: 0.9, loops: false, families: ['winged-bug', 'bird'], category: 'flight', hint: 'Drops, flares wings, settles.' },
   { id: 'take-off', label: 'Take off', naturalDuration: 0.9, loops: false, families: ['winged-bug', 'bird'], category: 'flight', hint: 'Crouch, spring, wings out.' },
   { id: 'wag-tail', label: 'Wag tail', naturalDuration: 0.5, loops: true, families: ['quadruped', 'bird'], category: 'body', hint: 'Happy tail wag.' },
@@ -433,20 +433,33 @@ export function bakeAction(action: ActionId, opts: BakeOptions): AnimTrack[] {
       break;
     }
     case 'flap': {
-      // Wingbeats are far too fast to key one-per-cycle at 30fps; we key the
-      // envelope and let a high step count carry the blur.
-      const beats = Math.max(2, Math.round(duration / 0.16));
-      const f = (u: number) => Math.sin(u * beats * TAU);
-      if (family === 'winged-bug') {
-        b.curve('rig.leftWing.rz', (u) => -0.5 - f(u) * 0.8 * amp, beats * 6);
-        b.curve('rig.rightWing.rz', (u) => 0.5 + f(u) * 0.8 * amp, beats * 6);
-        b.curve('rig.leftWing.rx', (u) => f(u) * 0.25 * amp, beats * 6);
-        b.curve('rig.rightWing.rx', (u) => f(u) * 0.25 * amp, beats * 6);
+      // An insect wingbeat is far too fast to show at 30fps. This used to key
+      // it literally — 6.25 beats a second through 46 degrees — on the theory
+      // that a high step count would read as a blur. It does not: there is one
+      // sample per frame and no motion blur, so the wings jumped about 35
+      // degrees between frames and the whole character strobed. Children's CGI
+      // draws fast wings as a soft quiver around a swept-back pose and lets the
+      // translucency say "moving"; that is what this does now.
+      //
+      // A bird is a different animal — its beat is slow enough to draw — so it
+      // keeps a real flap, at a rate a frame can follow.
+      const isBug = family === 'winged-bug';
+      const rate = isBug ? 2 : 1.8;                 // beats per second
+      const beats = Math.max(1, Math.round(duration * rate));
+      const f = (u: number) => Math.sin((u * beats + phase) * TAU);
+      const steps = Math.max(12, beats * 8);
+      if (isBug) {
+        const sweep = 0.5;                          // held back, not mid-beat
+        const quiver = 0.14 * amp;                  // about eight degrees
+        b.curve('rig.leftWing.rz', (u) => -sweep - f(u) * quiver, steps);
+        b.curve('rig.rightWing.rz', (u) => sweep + f(u) * quiver, steps);
+        b.curve('rig.leftWing.rx', (u) => f(u) * 0.05 * amp, steps);
+        b.curve('rig.rightWing.rx', (u) => f(u) * 0.05 * amp, steps);
       } else {
-        b.curve('rig.leftWing.rz', (u) => -f(u) * 0.9 * amp, beats * 6);
-        b.curve('rig.rightWing.rz', (u) => f(u) * 0.9 * amp, beats * 6);
-        b.curve('rig.leftWingTip.rz', (u) => -f(u) * 0.5 * amp, beats * 6);
-        b.curve('rig.rightWingTip.rz', (u) => f(u) * 0.5 * amp, beats * 6);
+        b.curve('rig.leftWing.rz', (u) => -f(u) * 0.45 * amp, steps);
+        b.curve('rig.rightWing.rz', (u) => f(u) * 0.45 * amp, steps);
+        b.curve('rig.leftWingTip.rz', (u) => -f(u) * 0.28 * amp, steps);
+        b.curve('rig.rightWingTip.rz', (u) => f(u) * 0.28 * amp, steps);
       }
       break;
     }
