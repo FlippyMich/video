@@ -1,0 +1,99 @@
+file,character,direction,line
+001-buzzy.wav,BUZZY,excited,"Hello, hello, HELLO, my friends! It's me — Buzzy!"
+002-buzzy.wav,BUZZY,happy,Welcome back to the garden!
+003-buzzy.wav,BUZZY,giggling,"Oh, I saw that! What a lovely wave."
+004-buzzy.wav,BUZZY,curious,Here's a big question. How do you know what's happening around you?
+005-buzzy.wav,BUZZY,happy,Lily! Just in time. How do we find out about the world?
+006-lily.wav,LILY,thinking,Ooh. With my eyes? I look at things.
+007-buzzy.wav,BUZZY,excited,Yes! And that's called a sense. Your sense of sight.
+008-lily.wav,LILY,surprised,A sense? Is there more than one?
+009-buzzy.wav,BUZZY,proud,"There are five! Five senses, Lily. And today, we're going to find every single one."
+010-lily.wav,LILY,excited,Five! Let's go and find them!
+011-buzzy.wav,BUZZY,happy,"Five it is. Come on, everybody. Let's have a sense-ational adventure!"
+012-buzzy.wav,BUZZY,excited,Here we are! Sense number one.
+013-buzzy.wav,BUZZY,,"Everybody, put your hands over your eyes. Go on!"
+014-buzzy.wav,BUZZY,curious,Can you see anything at all?
+015-lily.wav,LILY,giggling,Not a thing! It's all dark.
+016-buzzy.wav,BUZZY,happy,Now — open them up!
+017-buzzy.wav,BUZZY,excited,Ta-daaa! Look at all this!
+018-lily.wav,LILY,surprised,Wow. The colours!
+019-buzzy.wav,BUZZY,proud,"That's your sense of SIGHT. Your eyes let you see colours, and shapes, and how big things are."
+020-buzzy.wav,BUZZY,,"Let's practise. I'll say a colour, and you find it."
+021-buzzy.wav,BUZZY,excited,Can you find something RED?
+022-lily.wav,LILY,proud,I found a red tulip!
+023-buzzy.wav,BUZZY,happy,Beautiful. Now something YELLOW.
+024-lily.wav,LILY,excited,The middle of the daisy is yellow!
+025-buzzy.wav,BUZZY,curious,Now here's the tricky one. Something GREEN.
+026-lily.wav,LILY,happy,"That's easy. The grass, the leaves, the stems — green, green, green!"
+027-buzzy.wav,BUZZY,proud,"Brilliant looking, everybody. That's sense number one: seeing."
+028-pip.wav,PIP,happy,Tweet! Tweet-tweet!
+029-buzzy.wav,BUZZY,surprised,Oh! Did you hear that?
+030-lily.wav,LILY,curious,I did! Who was that?
+031-pip.wav,PIP,excited,"It was me! Hello, I'm Pip."
+032-buzzy.wav,BUZZY,excited,"Everybody, this is sense number two."
+033-buzzy.wav,BUZZY,,Close your eyes for me. Now — what can you hear?
+034-lily.wav,LILY,happy,I can hear Pip singing!
+035-buzzy.wav,BUZZY,,"And the water going splish, splash."
+036-pip.wav,PIP,proud,And the wind in the leaves. Shhhhhh.
+037-buzzy.wav,BUZZY,proud,"Open your eyes! That was your sense of HEARING. Your ears did all of that, all by themselves."
+038-lily.wav,LILY,surprised,My ears were working the whole time and I didn't even know!
+039-buzzy.wav,BUZZY,excited,"Now, listen very carefully. Is this sound LOUD, or is it QUIET?"
+040-buzzy.wav,BUZZY,happy,Quiet! Well listened. And this one?
+041-lily.wav,LILY,giggling,That one made me jump!
+042-pip.wav,PIP,excited,Let's make a sound together! Can you clap your hands?
+043-buzzy.wav,BUZZY,proud,What a wonderful noise. That's sense number two: hearing.
+044-buzzy.wav,BUZZY,excited,"Mmmmm. Oh, my goodness. Come and smell this."
+045-lily.wav,LILY,curious,What is it?
+046-buzzy.wav,BUZZY,happy,It's the flower. Take a big breath in through your nose.
+047-lily.wav,LILY,excited,Ohhh! It's sweet! Like honey!
+048-buzzy.wav,BUZZY,proud,That's sense number three. SMELLING. Your nose is doing that.
+049-buzzy.wav,BUZZY,curious,Some smells are lovely. And some are... not so lovely.
+050-dotty.wav,DOTTY,yucky,Ugh! Has anybody been near the compost heap?
+051-buzzy.wav,BUZZY,giggling,Oh dear. Dotty found a not-so-lovely one.
+052-lily.wav,LILY,happy,Mine is bread. Warm bread from the oven.
+053-buzzy.wav,BUZZY,excited,"And mine is flowers, of course. I'm a bee!"
+054-buzzy.wav,BUZZY,proud,"Three senses found. Seeing, hearing, and smelling."
+055-buzzy.wav,BUZZY,excited,Now this one — this one is my favourite.
+056-lily.wav,LILY,curious,"What's in the basket, Buzzy?"
+057-lily.wav,LILY,excited,A strawberry!
+058-buzzy.wav,BUZZY,happy,Take a little taste. Just a little one.
+059-lily.wav,LILY,excited,Mmmm! It's SWEET!
+060-buzzy.wav,BUZZY,proud,"Sense number four. TASTING. Your tongue knows sweet, and salty, and sour."
+061-dotty.wav,DOTTY,curious,Sour? What's sour?
+062-buzzy.wav,BUZZY,giggling,"Oh, Dotty. You're going to find out."
+063-dotty.wav,DOTTY,curious,It's yellow. It looks lovely.
+064-dotty.wav,DOTTY,yucky,Oooooooh! That's SOUR!
+065-buzzy.wav,BUZZY,happy,And remember — we only taste things we know are safe.
+066-lily.wav,LILY,happy,Always ask a grown-up first!
+067-buzzy.wav,BUZZY,proud,Exactly right. That's four!
+068-buzzy.wav,BUZZY,curious,One more to find. Just one!
+069-lily.wav,LILY,excited,The last sense! What is it?
+070-buzzy.wav,BUZZY,excited,"Feel this moss. Go on, reach out with me."
+071-lily.wav,LILY,happy,It's soft! Like a little cushion.
+072-buzzy.wav,BUZZY,proud,That's sense number five. TOUCHING. And your skin does it.
+073-dotty.wav,DOTTY,surprised,Ooh! This one isn't soft at all!
+074-buzzy.wav,BUZZY,curious,"What does it feel like, Dotty?"
+075-dotty.wav,DOTTY,,Bumpy. And a bit prickly.
+076-buzzy.wav,BUZZY,happy,Bumpy and prickly. Lovely describing.
+077-lily.wav,LILY,happy,And this rock is smooth. And cold!
+078-buzzy.wav,BUZZY,excited,Smooth. Cold. Rough. Warm. Soft. Your skin knows them all.
+079-buzzy.wav,BUZZY,giggling,"Mine is fuzzy! I'm a bee, remember."
+080-buzzy.wav,BUZZY,proud,And that's five! We found all five!
+081-buzzy.wav,BUZZY,excited,We did it! Let's count them all together.
+082-buzzy.wav,BUZZY,happy,Number one — my eyes can SEE.
+083-buzzy.wav,BUZZY,,Number two — my ears can HEAR.
+084-buzzy.wav,BUZZY,,"My nose can SMELL, and my tongue can TASTE."
+085-buzzy.wav,BUZZY,excited,And number five — my skin can TOUCH.
+086-lily.wav,LILY,excited,Five senses! Let's sing it!
+087-buzzy.wav,BUZZY,giggling,"Sing along with me, everybody!"
+088-buzzy.wav,BUZZY,happy,"Eyes to see and ears to hear,"
+089-buzzy.wav,BUZZY,,"A nose to smell the flowers near,"
+090-lily.wav,LILY,happy,"A tongue to taste our lunch today,"
+091-dotty.wav,DOTTY,excited,And skin to feel along the way!
+092-buzzy.wav,BUZZY,excited,"Five senses, five senses, one two three four five!"
+093-lily.wav,LILY,giggling,"Five senses, five senses, they help us feel alive!"
+094-buzzy.wav,BUZZY,happy,"So next time you're outside, have a go."
+095-buzzy.wav,BUZZY,,What can you see? What can you hear?
+096-buzzy.wav,BUZZY,curious,"What can you smell, and what can you touch?"
+097-buzzy.wav,BUZZY,excited,Thank you for coming on our sense-ational adventure!
+098-buzzy.wav,BUZZY,happy,"I'll see you next time. Bye bye, friends!"

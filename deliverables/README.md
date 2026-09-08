@@ -16,6 +16,14 @@ re-running the pipeline reproduces all of it.
 | `buzzys-senseational-adventure-1080p-upload.mp4` | The same film at a lower bitrate. Visually the same after YouTube's own re-encode, and small enough to send to somebody or keep in the repository. |
 | `buzzys-senseational-adventure-thumbnail.jpg` | A poster frame. |
 
+> **The video files here are one revision behind the code.** They were rendered
+> before the fix that stopped the winged characters strobing (their wings were
+> keyed at a real insect wingbeat, which at 30fps read as vibration). The
+> pipeline carries the fix; re-running stage 3 replaces these files. That
+> re-render is being held until the real voice recordings arrive, because the
+> cut is built from the voice timings and would have to be rendered twice
+> otherwise.
+
 Only the upload cut and the thumbnail are committed. The masters are 340–360 MB
 each, past GitHub's 100 MB limit per file; `node pipeline/03-render.mjs`
 reproduces them.

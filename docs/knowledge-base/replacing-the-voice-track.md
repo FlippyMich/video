@@ -20,6 +20,25 @@ where the speech starts inside the file, the phoneme sequence with timings, and
 the text that was spoken. That file is what drives both the cut and the
 lip-sync.
 
+## The recording list
+
+`deliverables/documents/voice-recording-list.csv` is the whole job in one file:
+all 98 lines in order, each with the filename to save it under, the character,
+the direction from the script, and the text.
+
+| file | character | direction | line |
+|---|---|---|---|
+| `001-buzzy.wav` | BUZZY | excited | Hello, hello, HELLO, my friends! It's me — Buzzy! |
+| `002-buzzy.wav` | BUZZY | happy | Welcome back to the garden! |
+
+Hand it to whoever is recording, or feed the `line` column to a text-to-speech
+service and save each result under the `file` name. Either way the rest is the
+same.
+
+Any format ffmpeg reads will do — the pipeline measures whatever it finds. Mono
+or stereo, 44.1kHz or 48kHz, WAV or MP3 renamed to `.wav`; none of it matters as
+long as the filenames match.
+
 ## The short version
 
 1. Record each line as its own file.
